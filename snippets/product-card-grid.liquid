@@ -72,9 +72,10 @@
       {%- endif -%}
       <div class="image-div">
         <img id="{{ img_id }}"
-              class="grid-view-item__image lazyload"
+              class="grid-view-item__image lazyloaded lazy2 lazy3"
               alt="{{ preview_image.alt }}"
-              data-src="{{ img_url }}"
+              data-src="{{ preview_image | img_url: '720x' }}"
+              data-mobsrc="{{ preview_image | img_url: '360x' }}"
               data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
               data-aspectratio="{{ preview_image.aspect_ratio }}"
               data-sizes="auto"

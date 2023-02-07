@@ -1,4 +1,4 @@
-{{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
+<link data-href="{{ 'section-image-banner.css' | asset_url }}" rel="stylesheet">
 {%- if section.settings.image_height == "adapt" and section.settings.image != blank -%}
   {%- if section.settings.image_mb != blank -%}
     {% assign mb_height = 1 | divided_by: section.settings.image_mb.aspect_ratio | times: 100 %}
@@ -95,19 +95,22 @@
         widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
         alt: section.settings.image.alt | escape
       }}
+       <img
+       src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="  
+       data-src="{{ section.settings.image | image_url: width: 1500 }}"
+       loading="lazy"
+       class="medium--hide lazy2 lazy3"
+       sizes="100vw">
       {% if section.settings.image_mb != blank %}
         {%-liquid
           assign image_height = section.settings.image_mb.width | divided_by: section.settings.image_mb.aspect_ratio
         -%}
-        {{ section.settings.image_mb | image_url: width: 1500 | image_tag:
-          loading: 'lazy',
-          width: section.settings.image_mb.width,
-          height: image_height,
-          class: 'medium-up--hide',
-          sizes: '100vw',
-          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
-          alt: section.settings.image_mb.alt | escape
-        }}
+        <img
+         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+         data-src="{{ section.settings.image_mb | image_url: width: 360 }}"
+         loading="lazy"
+         class="medium-up--hide lazy2 lazy3"
+         sizes="100vw">
       {% endif %}
     </div>
   {%- endif -%}

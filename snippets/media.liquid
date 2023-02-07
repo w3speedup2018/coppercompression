@@ -51,8 +51,10 @@
           <video data-airf-size="{{ product.metafields.airf.video.size }}" data-poster="{{- media | img_url: '400x' -}}" data-src="{{- video_url -}}" class="feature-row__image {{ media_class }} lazyload" loop autoplay muted playsinline></video>
         {%- else -%}
         <img id="{{ media_id }}"
-          class="feature-row__image {{ media_class }} lazyload{%- unless featured_media == media %} lazypreload{%- endunless -%}"
-          data-src="{{ img_url }}"
+          class="feature-row__image {{ media_class }} lazyloaded lazy2 lazy3{%- unless featured_media == media %} lazypreload{%- endunless -%}"
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+          data-src="{{ media | img_url: '720x' }}"
+          data-mobsrc="{{ media | img_url: '360x' }}"
           data-widths="[360, 560, 1120]"
           data-aspectratio="{{ media.preview_image.aspect_ratio }}"
           data-sizes="auto"

@@ -33,9 +33,8 @@
             {%- assign img_url = section.settings.logo | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
             <a href="{{ routes.root_url }}" class="site-header__logo-image{% if section.settings.align_logo == 'center' %} site-header__logo-image--centered{%- endif -%}" data-image-loading-animation>
               {%- capture logo_alt -%}{{ section.settings.logo.alt | default: shop.name }}{%- endcapture -%}
-              <img class="lazyload js"
+              <img class="lazyloaded js"
                    src="{{ section.settings.logo | img_url: '300x300' }}"
-                   data-src="{{ img_url }}"
                    data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
                    data-aspectratio="{{ section.settings.logo.aspect_ratio }}"
                    data-sizes="auto"
@@ -213,9 +212,8 @@
             <a href="{{ block.settings.link }}">
               <img
                 role="presentation"
-                class="site-header__icon-image lazyload"
-                data-src="{{ img_url }}"
-                data-widths="[40, 80, 120, 160, 200, 240, 280]"
+                class="site-header__icon-image lazyloaded"
+                src="{{ image | img_url: '40x' }}"
                 data-aspectratio="{{ image.aspect_ratio }}"
                 data-sizes="auto"
                 alt="">

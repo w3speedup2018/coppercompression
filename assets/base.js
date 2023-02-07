@@ -9780,7 +9780,7 @@ theme.FooterSection = (function () {
   return Footer;
 })();
 
-document.addEventListener("DOMContentLoaded", function () {
+setTimeout(function() {
   var sections = new theme.Sections();
 
   sections.register("cart-template", theme.Cart);
@@ -9918,7 +9918,7 @@ document.addEventListener("DOMContentLoaded", function () {
       window.performance.mark("debut:fonts_loaded");
     });
   }
-});
+},1000);
 
 // Youtube API callback
 // eslint-disable-next-line no-unused-vars

@@ -1,10 +1,6 @@
-<script
-    type="text/javascript"
-    src="//dynamic.criteo.com/js/ld/ld.js?a=87666"
-    async="true"
-></script>
-<script type="text/javascript">
-    (function(){
+<script type="lazyload2" src="//dynamic.criteo.com/js/ld/ld.js?a=87666"></script>
+<script type="lazyload2">
+    setTimeout(function(){
       var deviceType = /iPad/.test(navigator.userAgent) ? "t" : /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Silk/.test(navigator.userAgent) ? "m" : "d";
       window.criteo_q = window.criteo_q || [];
       window.criteo_q.push(
@@ -130,5 +126,5 @@
           });
         }
       }, false);
-    })();
+    },1500);
 </script>
