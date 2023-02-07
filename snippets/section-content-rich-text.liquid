@@ -1,0 +1,49 @@
+{%- style -%}
+  {%- if itemType.settings.background_color != blank -%}
+    #shopify-section-{{- itemType.id }} .page-width {
+      background-color: {{ itemType.settings.background_color }}
+    }
+  {%- endif -%}
+  {%- if itemType.settings.preheading_color != blank -%}
+    #shopify-section-{{- itemType.id }} .rich-text .h4 {
+      color: {{ itemType.settings.preheading_color }};
+    }
+  {%- endif -%}
+  {%- if itemType.settings.heading_color != blank -%}
+    #shopify-section-{{- itemType.id }} .rich-text .h3 {
+      color: {{ itemType.settings.heading_color }};
+    }
+  {%- endif -%}
+  {%- if itemType.settings.text_color != blank -%}
+    #shopify-section-{{- itemType.id }} .rich-text p {
+      color: {{ itemType.settings.text_color }};
+    }
+  {%- endif -%}
+  {%- if itemType.settings.text_color != blank -%}
+    #shopify-section-{{- itemType.id }} .rich-text .h5 {
+      color: {{ itemType.settings.text_color }};
+    }
+  {%- endif -%}
+{%- endstyle -%}
+<div class="page-width">
+  <div class="rich-text rich-text--{{ itemType.settings.text_size }}" {{ itemType.shopify_attributes }}>
+    {% if itemType.settings.section_pretitle != blank %}
+      <div class="rich-text__preheading--{{ itemType.settings.text_size }} text-center">
+        <h3 class="h4">{{ itemType.settings.section_pretitle | escape }}</h2>
+      </div>
+    {% endif %}
+    {% if itemType.settings.section_title != blank %}
+      <div class="rich-text__heading--{{ itemType.settings.text_size }} text-center">
+        <h2 class="h3">{{ itemType.settings.section_title | escape }}</h2>
+      </div>
+    {% endif %}
+    {% if itemType.settings.text != blank %}
+      <div class="rich-text__text--{{ itemType.settings.text_size }} rte-setting text-center">{{ itemType.settings.text }}</div>
+    {% endif %}
+    {% if itemType.settings.footer_text != blank %}
+      <div class="rich-text__footer--{{ itemType.settings.text_size }} rte-setting text-center">
+        <h4 class="h5">{{ itemType.settings.footer_text }}</h4>
+      </div>
+    {% endif %}
+  </div>
+</div>

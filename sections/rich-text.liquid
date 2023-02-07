@@ -1,0 +1,98 @@
+<link href="{{'section-rich-text.css' | asset_url}}" defer="defer" rel="stylesheet">
+
+{%- render 'section-content-rich-text', itemType: section -%}
+
+{% schema %}
+{
+  "name": "Rich text",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Wide display"
+    },
+    {
+      "type": "text",
+      "id": "section_pretitle",
+      "label": "Pre Heading"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Heading",
+      "default": "Talk about your brand"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+    },
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Footer"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Style",
+      "default": "medium",
+      "options": [
+        {
+          "label": "Small",
+          "value": "small"
+        },
+        {
+          "label": "Medium thin",
+          "value": "medium-thin"
+        },
+        {
+          "label": "Medium",
+          "value": "medium"
+        },
+        {
+          "label": "Large thin",
+          "value": "large-thin"
+        },
+        {
+          "label": "Large",
+          "value": "large"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "preheading_color",
+      "label": "Preheading color"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "footer_color",
+      "label": "Footer color"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich text",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

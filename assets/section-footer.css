@@ -1,0 +1,197 @@
+
+.site-footer {
+  padding: 0;
+}
+.site-footer .h4,
+.site-footer h4 {
+  margin: 1em 0;
+  letter-spacing: 0.35rem;
+  font-weight: 800;
+  font-family: Gilroy, sans-serif;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 2;
+}
+.site-footer .h3 {
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0.67em 0;
+}
+.site-footer a:not([disabled]):hover {
+  color: #df9978;
+}
+.site-footer .page-width-hero {
+  margin: 0 auto;
+}
+.site-footer__item-content {
+  margin-bottom: 50px;
+}
+.site-footer__item-content p {
+  font-family: HkNova, sans-serif;
+  letter-spacing: 0.1rem;
+  font-size: 20px;
+  line-height: 1.4;
+  margin: 1em 0;
+  font-weight: 500;
+}
+.site-footer__content {
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+  padding: 60px 40px;
+}
+@media (min-width: 993px) {
+  .site-footer__content {
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+}
+.site-footer__item {
+  display: -ms-flexbox;
+  display: flex;
+}
+@media (max-width: 992px) {
+  .site-footer__item {
+    margin-top: 60px;
+  }
+}
+.site-footer__item-image {
+  width: 200px;
+  margin: 0 0 3px;
+}
+.site-footer__item-inner--link_list {
+  text-align: center;
+}
+@media (min-width: 993px) {
+  .site-footer__item-inner--link_list {
+    text-align: left;
+    padding-right: 30px;
+  }
+}
+@media (max-width: 992px) {
+  .site-footer__item-inner--link_list a {
+    display: block;
+    margin-top: 8px;
+  }
+}
+.site-footer__item-inner--newsletter {
+  width: 100%;
+  max-width: 400px;
+}
+@media (max-width: 992px) {
+  .site-footer__item-inner--newsletter {
+    text-align: center;
+  }
+}
+.site-footer__item-inner--newsletter .h4 {
+  padding: 40px 10px 60px;
+}
+.site-footer__item-inner--newsletter .newsletter__submit {
+  margin: 2px;
+  text-transform: none;
+  background: #4783b5;
+  color: #f5f5f5;
+  border: 1px solid hsla(0, 0%, 100%, 0.5);
+  display: inline-block;
+  padding: 14px 25px 15px;
+  font-size: 14px;
+  font-family: Gilroy, sans-serif;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+.site-footer__item-inner--newsletter .newsletter__submit.btn {
+  width: 100%;
+  border-radius: 4px;
+}
+@media (max-width: 992px) {
+  .site-footer__item-inner--newsletter .newsletter__submit {
+    font-size: 13px;
+  }
+}
+.site-footer__item-inner--newsletter .newsletter__label {
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.1rem;
+  margin-bottom: 8px;
+  width: 100%;
+  font-family: HkNova, sans-serif;
+  font-weight: 500;
+}
+.site-footer__item-inner--newsletter .newsletter__input {
+  background: transparent;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent transparent #fff;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 5px 8px;
+  margin: 2px 0 20px;
+  width: 100%;
+  display: block;
+  font-size: 16px;
+  font-family: HkNova, sans-serif;
+  line-height: 1.4;
+  min-height: 0;
+}
+.site-footer .site-footer__item-footing {
+  margin: 2em 0 30px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #fff;
+}
+.site-footer .site-footer__social-header {
+  margin: 0;
+  line-height: 2;
+}
+.site-footer__linklist-item {
+  display: block;
+  letter-spacing: 0.35rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 2;
+}
+.social-icons__item {
+  margin: 10px 20px 0 0;
+}
+.site-footer__copyright-content {
+  margin: 0;
+}
+.subfooter {
+  background: #4783b5;
+  padding: 20px 30px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+.subfooter-item {
+  font-size: 11px;
+}
+.subfooter-links {
+  text-align: right;
+}
+.subfooter-link {
+  display: inline-block;
+  padding-left: 6px;
+  text-transform: uppercase;
+}
+.subfooter-link a {
+  color: #fff;
+}
+.subfooter-link a:hover {
+  text-decoration: underline;
+}
+.klaviyo_messages {
+  padding-top: 20px;
+}

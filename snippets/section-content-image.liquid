@@ -1,0 +1,21 @@
+{%- assign img_url = itemType.settings.image | img_url: '1320x' -%}
+
+<div class="basic-image-block" data-section-id="{{ itemType.id }}" data-section-type="image-section" {{ itemType.shopify_attributes }} id="image-section-{{ itemType.id }}">
+
+  <img
+    class="desktop-image"
+    src="{{ img_url }}"
+    alt="{{ itemType.settings.image.alt | escape }}"
+  />
+
+  {%- if itemType.settings.mobile_image -%}
+    {%- assign mobile_img_url = itemType.settings.mobile_image | img_url: '1000x' -%}
+      <img
+        class="mobile-image"
+        src="{{ mobile_img_url }}"
+        data-src="{{ mobile_img_url }}"
+        alt="{{ itemType.settings.mobile_image.alt | escape }}"
+      />
+  {%- endif -%}
+
+</div>

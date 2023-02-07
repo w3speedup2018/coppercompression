@@ -1,0 +1,111 @@
+
+.store-availability-small-text {
+  font-size: calc(((15 - 2) / (15)) * 1em);
+}
+.store-availability-information {
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: 5px;
+}
+.store-availability-information-container {
+  margin-left: 5px;
+}
+.store-availability-information__stock,
+.store-availability-information__title {
+  margin-bottom: 0;
+}
+.store-availability-information__button {
+  text-decoration: underline;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  background: transparent;
+  margin-top: 8px;
+}
+.store-availability-container .icon {
+  min-width: 12px;
+  min-height: 12px;
+  width: 12px;
+  height: 12px;
+  margin: 4px 4px 0 0;
+}
+.store-availability-container .icon-in-stock {
+  fill: #00730b;
+}
+.store-availability-container .icon-out-of-stock {
+  fill: #d20;
+}
+.store-availability-container .icon-close {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+.store-availability-container .store-availability-list__stock .icon {
+  margin: 0 2px 3px 0;
+}
+.store-availabilities-modal {
+  z-index: 3;
+  width: 375px;
+  left: auto;
+  border: 1px solid #ebebeb;
+  box-sizing: border-box;
+  box-shadow: -4px 4px 6px rgba(58, 58, 58, 0.04);
+}
+.store-availabilities-modal--active {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  transform: translateY(0);
+  opacity: 1;
+}
+.store-availabilities-modal__header {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin: 16px 0;
+  padding: 0 24px;
+}
+.store-availabilities-modal__product-title {
+  font-size: calc(((15 2) / (15)) * 1em);
+  text-transform: none;
+  margin-bottom: 0;
+  letter-spacing: 0;
+}
+.store-availabilities-list {
+  overflow-y: auto;
+  padding: 0 20px;
+}
+.store-availabilities-modal__close {
+  margin: -14px -14px 0 0;
+  padding: 14px;
+  -ms-flex-item-align: start;
+  -ms-grid-row-align: start;
+  align-self: start;
+}
+.store-availability-list__item {
+  padding-bottom: 16px;
+}
+.store-availability-list__item:before {
+  content: "";
+  display: block;
+  margin: 0 0 16px;
+  border-bottom: 1px solid #ebebeb;
+}
+.store-availability-list__address {
+  font-size: calc(((15 - 2) / (15)) * 1em);
+  font-style: normal;
+  margin-bottom: 0;
+}
+.store-availability-list__location {
+  font-size: 15;
+  margin-bottom: 8px;
+}
+.store-availability-list__stock {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+.store-availability-list__phone {
+  margin-bottom: 0;
+}

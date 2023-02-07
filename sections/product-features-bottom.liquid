@@ -1,0 +1,1781 @@
+{%- for block in section.blocks -%}
+  <div id="shopify-section-{{- block.id }}">
+    {%- case block.type -%}
+      {%- when 'collection' -%}
+        {%- render 'section-content-collection', itemType: block -%}
+      {%- when 'feature-row' -%}
+        {%- render 'section-content-feature-row', itemType: block -%}
+      {%- when 'hero' -%}
+        {%- render 'section-content-hero', itemType: block -%}
+      {%- when 'rich-text' -%}
+        {%- render 'section-content-rich-text', itemType: block -%}
+      {%- when 'video' -%}
+        {%- render 'section-content-video', itemType: block -%}
+      {%- when 'feature-columns' -%}
+        {%- render 'section-content-feature-columns', itemType: block -%}
+      {%- when 'featured-media' -%}
+        {%- render 'section-content-featured-media', itemType: block -%}
+      {%- when 'form' -%}
+        {%- render 'section-content-form', itemType: block -%}
+      {%- when 'stripe' -%}
+        {%- render 'section-content-stripe', itemType: block -%}
+      {%- when 'image' -%}
+        {%- render 'section-content-image', itemType: block -%}
+      {%- when 'counter' -%}
+        {%- render 'section-content-countdown-timer', itemType: block -%}
+    {%- endcase -%}
+  </div>
+{%- endfor -%}
+
+{%- if collection -%}
+  <div class="text-center return-link-wrapper page-width">
+    <a href="{{ collection.url }}" class="btn btn--secondary btn--has-icon-before return-link">
+      {%- render 'icon-arrow-left' -%}
+      {{ 'products.product.back_to_collection' | t: title: collection.title }}
+    </a>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Page Content",
+  "class": "page-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Featured collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Featured collection"
+        },
+        {
+          "type": "text",
+          "id": "pretitle",
+          "label": "Pre heading"
+        },
+        {
+          "id": "collection",
+          "type": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "range",
+          "id": "grid",
+          "label": "Products per row",
+          "min": 2,
+          "max": 5,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "rows",
+          "label": "Rows",
+          "min": 1,
+          "max": 9,
+          "step": 1,
+          "default": 2
+        },
+        {
+          "type": "color",
+          "id": "color_bg",
+          "label": "Background",
+          "default": "#f6f6f6"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_vendor",
+          "label": "Show product vendors",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_view_all",
+          "label": "Show 'View all' button",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "feature-row",
+      "name": "Image with text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "round_image",
+          "label": "Round image",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "page_layout",
+          "label": "Layout",
+          "default": "wide",
+          "options": [
+            {
+              "value": "wide",
+              "label": "Wide"
+            },
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "narrow",
+              "label": "Narrow"
+            },
+            {
+              "value": "slim",
+              "label": "Slim"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Image alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "stacked",
+              "label": "Stacked"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "mobile_layout",
+          "label": "Mobile layout",
+          "default": "image_first",
+          "options": [
+            {
+              "value": "image_first",
+              "label": "Image first"
+            },
+            {
+              "value": "text_first",
+              "label": "Text first"
+            },
+            {
+              "value": "hide_image",
+              "label": "Hide image"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Image with text"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "bullets",
+          "label": "Bullets"
+        },
+        {
+          "type": "checkbox",
+          "id": "stars",
+          "label": "Show 5 Stars",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "text_2",
+          "label": "Subtext"
+        },
+        {
+          "type": "text",
+          "id": "text_3",
+          "label": "Subtext 2"
+        },
+        {
+          "type": "richtext",
+          "id": "text_4",
+          "label": "Subtext 3"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "info": "If left blank, button link will apply to the entire block"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_button",
+          "label": "Apply link to entire block",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "align_text",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centered"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "font_size",
+          "label": "Font Style",
+          "default": "large",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button Style",
+          "default": "normal",
+          "options": [
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "large-knockout",
+              "label": "Large knockout"
+            }
+          ]
+        },
+        {
+          "type": "product",
+          "id": "product_add_to_cart",
+          "label": "Quick add product",
+          "info": "If a product is selected, the button will add it to the cart when clicked. Otherwise it will redirect to the button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "remove_margin",
+          "label": "Margin around",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "color_bg",
+          "label": "Content Background"
+        },
+        {
+          "type": "color",
+          "id": "section_color_bg",
+          "label": "Section Background"
+        },
+        {
+          "type": "color",
+          "id": "color_preheading",
+          "label": "Preheading color"
+        },
+        {
+          "type": "color",
+          "id": "color_heading",
+          "label": "Heading color"
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text color"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border color"
+        }
+      ]
+    },
+    {
+      "type": "hero",
+      "name": "Image with text overlay",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image",
+          "info": "Optional override"
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Image alignment",
+          "default": "center",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Middle"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "hero_layout",
+          "label": "Layout",
+          "default": "full_width",
+          "options": [
+            {
+              "label": "Full width",
+              "value": "full_width"
+            },
+            {
+              "label": "Fixed width",
+              "value": "fixed_width"
+            },
+            {
+              "label": "Page width",
+              "value": "page_width"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "hero_size",
+          "label": "Section height",
+          "default": "medium",
+          "options": [
+            {
+              "label": "Adapt to content",
+              "value": "content"
+            },
+            {
+              "label": "Adapt to image",
+              "value": "adapt"
+            },
+            {
+              "label": "Extra Small",
+              "value": "x-small"
+            },
+            {
+              "label": "Small",
+              "value": "small"
+            },
+            {
+              "label": "Medium",
+              "value": "medium"
+            },
+            {
+              "label": "Large",
+              "value": "large"
+            },
+            {
+              "label": "Extra Large",
+              "value": "x-large"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "checkbox",
+          "id": "pretitle_is_page_title",
+          "default": false,
+          "label": "Use pre heading as page title (h1 tag will be used)"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "default": "medium",
+          "options": [
+            {
+              "label": "Medium",
+              "value": "medium"
+            },
+            {
+              "label": "Large",
+              "value": "large"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Image with text overlay"
+        },
+        {
+          "type": "checkbox",
+          "id": "title_is_page_title",
+          "default": false,
+          "label": "Use heading as page title (h1 tag will be used)"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Heading color"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Use overlay text to give your customers insight into your brand. Select imagery and text that relates to your style and story.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "color",
+          "id": "content_bg",
+          "label": "Content background color"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background color"
+        }
+      ]
+    },
+    {
+      "type": "rich-text",
+      "name": "Rich Text",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Wide display"
+        },
+        {
+          "type": "text",
+          "id": "section_pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "section_title",
+          "label": "Heading",
+          "default": "Talk about your brand"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "text",
+          "id": "footer_text",
+          "label": "Footer"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Style",
+          "default": "medium",
+          "options": [
+            {
+              "label": "Small",
+              "value": "small"
+            },
+            {
+              "label": "Medium thin",
+              "value": "medium-thin"
+            },
+            {
+              "label": "Medium",
+              "value": "medium"
+            },
+            {
+              "label": "Large thin",
+              "value": "large-thin"
+            },
+            {
+              "label": "Large",
+              "value": "large"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "preheading_color",
+          "label": "Preheading color"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading color"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color"
+        },
+        {
+          "type": "color",
+          "id": "footer_color",
+          "label": "Footer color"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color"
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Cover image",
+          "info": "Always shown on mobile devices"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image alignment",
+          "default": "center center",
+          "options": [
+            {
+              "label": "Top left",
+              "value": "left top"
+            },
+            {
+              "label": "Top center",
+              "value": "center top"
+            },
+            {
+              "label": "Top right",
+              "value": "right top"
+            },
+            {
+              "label": "Middle left",
+              "value": "left center"
+            },
+            {
+              "label": "Middle center",
+              "value": "center center"
+            },
+            {
+              "label": "Middle right",
+              "value": "right center"
+            },
+            {
+              "label": "Bottom left",
+              "value": "left bottom"
+            },
+            {
+              "label": "Bottom center",
+              "value": "center bottom"
+            },
+            {
+              "label": "Bottom right",
+              "value": "right bottom"
+            }
+          ]
+        },
+        {
+          "type": "video_url",
+          "id": "video_link",
+          "label": "Video link",
+          "accept": [
+            "youtube"
+          ],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        },
+        {
+          "type": "text",
+          "label": "Video file",
+          "id": "video_file",
+          "info": "File name of video from Shopify files"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_overlay",
+          "label": "Show overlay",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "default": "image_with_play",
+          "options": [
+            {
+              "label": "Image with play button",
+              "value": "image_with_play"
+            },
+            {
+              "label": "Background video",
+              "value": "background"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "height",
+          "label": "Video height",
+          "default": "medium",
+          "options": [
+            {
+              "label": "Small",
+              "value": "small"
+            },
+            {
+              "label": "Medium",
+              "value": "medium"
+            },
+            {
+              "label": "Large",
+              "value": "large"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "video_title",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "default": "medium",
+          "options": [
+            {
+              "label": "Medium",
+              "value": "medium"
+            },
+            {
+              "label": "Large",
+              "value": "large"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "feature-columns",
+      "name": "Featured columns",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Text columns with images"
+        },
+        {
+          "type": "text",
+          "id": "pretitle",
+          "label": "Pre title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "select",
+          "id": "page_layout",
+          "label": "Layout",
+          "default": "wide",
+          "options": [
+            {
+              "value": "wide",
+              "label": "Wide"
+            },
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "narrow",
+              "label": "Narrow"
+            },
+            {
+              "value": "slim",
+              "label": "Slim"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "mobile_layout",
+          "label": "Mobile Layout",
+          "default": "grid",
+          "options": [
+            {
+              "value": "grid",
+              "label": "Grid"
+            },
+            {
+              "value": "stacked",
+              "label": "Stacked"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "mobile_page_width",
+          "label": "Mobile Width",
+          "default": "compressed",
+          "options": [
+            {
+              "value": "compressed",
+              "label": "Compressed"
+            },
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "wide",
+              "label": "Wide"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "per_row",
+          "label": "Columns per row",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "select",
+          "id": "align_text",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centered"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "justify",
+              "label": "Justified"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "align_image",
+          "label": "Image alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centered"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "default": "normal",
+          "options": [
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "default": "normal",
+          "options": [
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "small",
+              "label": "Small"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color"
+        },
+        {
+          "type": "color",
+          "id": "content_background_color",
+          "label": "Content_background color"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading color"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color"
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Button background color"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background image"
+        },
+        {
+          "type": "header",
+          "content": "Block 1"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_1_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "block_1_enable_image",
+          "label": "Show image",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "block_1_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "block_1_image_dimensions",
+          "label": "Max image dimensions",
+          "info": "Leave blank for automatic dimensions or use format WxH (100x100)"
+        },
+        {
+          "type": "text",
+          "id": "block_1_title",
+          "label": "Heading",
+          "default": "Add a title or tagline"
+        },
+        {
+          "type": "richtext",
+          "id": "block_1_text",
+          "label": "Text",
+          "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_1_button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "block_1_button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_2_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "block_2_enable_image",
+          "label": "Show image",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "block_2_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "block_2_image_dimensions",
+          "label": "Max image dimensions",
+          "info": "Leave blank for automatic dimensions or use format WxH (100x100)"
+        },
+        {
+          "type": "text",
+          "id": "block_2_title",
+          "label": "Heading",
+          "default": "Add a title or tagline"
+        },
+        {
+          "type": "richtext",
+          "id": "block_2_text",
+          "label": "Text",
+          "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_2_button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "block_2_button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 3"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_3_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "block_3_enable_image",
+          "label": "Show image",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "block_3_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "block_3_image_dimensions",
+          "label": "Max image dimensions",
+          "info": "Leave blank for automatic dimensions or use format WxH (100x100)"
+        },
+        {
+          "type": "text",
+          "id": "block_3_title",
+          "label": "Heading",
+          "default": "Add a title or tagline"
+        },
+        {
+          "type": "richtext",
+          "id": "block_3_text",
+          "label": "Text",
+          "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_3_button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "block_3_button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 4"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_4_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "block_4_enable_image",
+          "label": "Show image",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "block_4_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "block_4_image_dimensions",
+          "label": "Max image dimensions",
+          "info": "Leave blank for automatic dimensions or use format WxH (100x100)"
+        },
+        {
+          "type": "text",
+          "id": "block_4_title",
+          "label": "Heading",
+          "default": "Add a title or tagline"
+        },
+        {
+          "type": "richtext",
+          "id": "block_4_text",
+          "label": "Text",
+          "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_4_button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "block_4_button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 5"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_5_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "block_5_enable_image",
+          "label": "Show image",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "block_5_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "block_5_image_dimensions",
+          "label": "Max image dimensions",
+          "info": "Leave blank for automatic dimensions or use format WxH (100x100)"
+        },
+        {
+          "type": "text",
+          "id": "block_5_title",
+          "label": "Heading",
+          "default": "Add a title or tagline"
+        },
+        {
+          "type": "richtext",
+          "id": "block_5_text",
+          "label": "Text",
+          "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_5_button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "block_5_button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 6"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_6_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "block_6_enable_image",
+          "label": "Show image",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "block_6_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "block_6_image_dimensions",
+          "label": "Max image dimensions",
+          "info": "Leave blank for automatic dimensions or use format WxH (100x100)"
+        },
+        {
+          "type": "text",
+          "id": "block_6_title",
+          "label": "Heading",
+          "default": "Add a title or tagline"
+        },
+        {
+          "type": "richtext",
+          "id": "block_6_text",
+          "label": "Text",
+          "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_6_button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "block_6_button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 7"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_7_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "block_7_enable_image",
+          "label": "Show image",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "block_7_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "block_7_image_dimensions",
+          "label": "Max image dimensions",
+          "info": "Leave blank for automatic dimensions or use format WxH (100x100)"
+        },
+        {
+          "type": "text",
+          "id": "block_7_title",
+          "label": "Heading",
+          "default": "Add a title or tagline"
+        },
+        {
+          "type": "richtext",
+          "id": "block_7_text",
+          "label": "Text",
+          "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_7_button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "block_7_button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 8"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_8_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "block_8_enable_image",
+          "label": "Show image",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "block_8_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "block_8_image_dimensions",
+          "label": "Max image dimensions",
+          "info": "Leave blank for automatic dimensions or use format WxH (100x100)"
+        },
+        {
+          "type": "text",
+          "id": "block_8_title",
+          "label": "Heading",
+          "default": "Add a title or tagline"
+        },
+        {
+          "type": "richtext",
+          "id": "block_8_text",
+          "label": "Text",
+          "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_8_button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "block_8_button_link",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "featured-media",
+      "name": "Featured Media",
+      "settings": [
+        {
+          "type": "text",
+          "id": "pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Blog posts"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sub Heading"
+        },
+        {
+          "type": "checkbox",
+          "id": "align_heading_left",
+          "label": "Heading as sidebar",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Block 1"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_1_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "block_1_pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "block_1_title",
+          "label": "Heading",
+          "default": "Media"
+        },
+        {
+          "type": "richtext",
+          "id": "block_1_content",
+          "label": "Content",
+          "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_1_button_label",
+          "label": "Button label",
+          "default": "Click here"
+        },
+        {
+          "type": "url",
+          "id": "block_1_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_2_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "block_2_pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "block_2_title",
+          "label": "Heading",
+          "default": "Media"
+        },
+        {
+          "type": "richtext",
+          "id": "block_2_content",
+          "label": "Content",
+          "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_2_button_label",
+          "label": "Button label",
+          "default": "Click here"
+        },
+        {
+          "type": "url",
+          "id": "block_2_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 3"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_3_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "block_3_pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "block_3_title",
+          "label": "Heading",
+          "default": "Media"
+        },
+        {
+          "type": "richtext",
+          "id": "block_3_content",
+          "label": "Content",
+          "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_3_button_label",
+          "label": "Button label",
+          "default": "Click here"
+        },
+        {
+          "type": "url",
+          "id": "block_3_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 4"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_4_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "block_4_pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "block_4_title",
+          "label": "Heading",
+          "default": "Media"
+        },
+        {
+          "type": "richtext",
+          "id": "block_4_content",
+          "label": "Content",
+          "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_4_button_label",
+          "label": "Button label",
+          "default": "Click here"
+        },
+        {
+          "type": "url",
+          "id": "block_4_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 5"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_5_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "block_5_pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "block_5_title",
+          "label": "Heading",
+          "default": "Media"
+        },
+        {
+          "type": "richtext",
+          "id": "block_5_content",
+          "label": "Content",
+          "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_5_button_label",
+          "label": "Button label",
+          "default": "Click here"
+        },
+        {
+          "type": "url",
+          "id": "block_5_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 6"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_6_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "block_6_pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "block_6_title",
+          "label": "Heading",
+          "default": "Media"
+        },
+        {
+          "type": "richtext",
+          "id": "block_6_content",
+          "label": "Content",
+          "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_6_button_label",
+          "label": "Button label",
+          "default": "Click here"
+        },
+        {
+          "type": "url",
+          "id": "block_6_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 7"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_7_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "block_7_pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "block_7_title",
+          "label": "Heading",
+          "default": "Media"
+        },
+        {
+          "type": "richtext",
+          "id": "block_7_content",
+          "label": "Content",
+          "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_7_button_label",
+          "label": "Button label",
+          "default": "Click here"
+        },
+        {
+          "type": "url",
+          "id": "block_7_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Block 8"
+        },
+        {
+          "type": "checkbox",
+          "id": "block_8_enabled",
+          "label": "Enable block",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "block_8_pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "block_8_title",
+          "label": "Heading",
+          "default": "Media"
+        },
+        {
+          "type": "richtext",
+          "id": "block_8_content",
+          "label": "Content",
+          "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "block_8_button_label",
+          "label": "Button label",
+          "default": "Click here"
+        },
+        {
+          "type": "url",
+          "id": "block_8_link",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "form",
+      "name": "Klaviyo Form",
+      "settings": [
+        {
+          "type": "text",
+          "id": "klaviyoID",
+          "label": "Klaviyo ID",
+          "default": "RP2kXX"
+        }
+      ]
+    },
+    {
+      "type": "stripe",
+      "name": "Copper stripe",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "page_width",
+          "label": "Limit to Page Width",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Basic Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
+        }
+      ]
+    },
+    {
+      "type": "counter",
+      "name": "Countdown Timer",
+      "settings": [
+        {
+          "type": "text",
+          "id": "countdown_id",
+          "label": "Countdowm timer id"
+        },
+        {
+          "type": "select",
+          "id": "page_layout",
+          "label": "Layout",
+          "default": "wide",
+          "options": [
+            {
+              "value": "wide",
+              "label": "Wide"
+            },
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "narrow",
+              "label": "Narrow"
+            },
+            {
+              "value": "slim",
+              "label": "Slim"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_sizes",
+          "default": false,
+          "label": "Use custom sizes on mobile"
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile title size",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "subheading_size",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile subheading size",
+          "default": 32
+        },
+        {
+          "type": "range",
+          "id": "time_size",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile time size",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "legend_size",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile legend size",
+          "default": 24
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Bottom Content"
+    }
+  ],
+	"templates": ["product"]
+}
+{% endschema %}

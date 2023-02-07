@@ -1,0 +1,196 @@
+{% paginate search.results by 24 %}
+
+  <div class="page-width">
+    {% if search.performed == false %}
+      <div class="text-center">
+        <h1 class="h2">{{ 'general.search.title' | t }}</h1>
+    {% else %}
+      <div class="text-center">
+        <h1 class="h2">
+          <span class="visually-hidden">{{ 'general.search.heading' | t: count: search.results_count }}:</span>
+          {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+        </h1>
+    {% endif %}
+        <div class="grid">
+          <div class="grid__item medium-up--six-tenths medium-up--push-two-tenths">
+            {% if search.performed and search.results_count == 0 %}
+              <div class="rte search--no-results-found">
+                <p>{{ 'general.search.no_results' | t }}</p>
+              </div>
+            {% endif %}
+            <form action="{{ routes.search_url }}" method="get" role="search" class="search-form search-page-form">
+              <div class="input-group input-group--nowrap">
+                <div class="input-group__field input-group__field--connected search-form__input-wrapper">
+                  <input
+                    type="search"
+                    name="q"
+                    value="{{ search.terms | escape }}"
+                    placeholder="{{ 'general.search.placeholder' | t }}"
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-owns="predictive-search-results"
+                    aria-expanded="false"
+                    aria-label="{{ 'general.search.placeholder' | t }}"
+                    aria-haspopup="listbox"
+                    class="search-form__input"
+                    data-search-page-predictive-search-input
+                    data-base-url="{{ routes.search_url }}"
+                  />
+
+                  <input type="hidden" name="options[prefix]" value="last" aria-hidden="true" />
+
+                  <button type="reset" class="search-form__clear-action" aria-label="{{ 'general.search.clear_search_term' | t }}" data-search-page-predictive-search-clear>
+                    {% render 'icon-close' %}
+                  </button>
+
+                  <div class="predictive-search-wrapper" data-predictive-search-mount="default"></div>
+                </div>
+
+                <button type="submit" class="search-form__connected-submit" aria-label="{{ 'general.search.submit' | t }}" data-search-page-predictive-search-submit>
+                  {% render 'icon-search' %}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+  {% if search.performed %}
+    {% if search.results_count > 0 %}
+      <hr aria-hidden="true" />
+    {% endif %}
+
+    <h2 class="visually-hidden">{{ 'general.search.heading' | t: count: search.results_count }}</h2>
+
+    <ul class="page-width list-view-items product-grid product-grid--4">
+      {% for item in search.results %}      
+        {% if item.object_type == 'product' %}
+          {% assign show_variations = settings.search_show_variations %}
+          {% assign product = item %}
+          {%- liquid
+            assign color_option = false
+            assign size_option = false
+            assign filter_option = false
+            assign filter_values = ''
+            assign show_variations = show_variations | default: false
+            
+            if product.options.size > 0
+              for option in product.options_with_values
+                assign option_name = option.name | downcase
+                if option_name == 'color'
+                  assign color_option = option
+                elsif option_name == 'size'
+                  assign size_option = option
+                endif
+              endfor
+            endif
+            
+            if color_option
+              assign filter_values = color_option.values
+              assign filter_option = color_option
+              unless show_variations
+                assign filter_values = color_option.values.first | split: ','
+              endunless
+            elsif size_option and show_variations
+              assign left_found = false
+              assign right_found = false
+              assign filter_option = size_option
+              
+              for v in size_option.values
+                assign value = v | downcase
+                if value contains 'left' and left_found == false
+                  assign left_found = true
+                elsif value contains 'right' and right_found == false
+                  assign right_found = true
+                endif
+              endfor
+              
+              if left_found
+                assign filter_values = 'left'
+                if right_found
+                  assign filter_values = filter_values | append: ',right'
+                endif
+              endif
+              
+              if right_found and left_found == false
+                assign filter_values = 'right'
+              endif
+              assign filter_values = filter_values | split: ','
+            endif
+          -%}
+
+          {% if filter_values.size > 0 %}
+            {% for filter_value in filter_values %}
+              <li class="list-view-item product-grid-item">
+                {% render 'product-card-grid', product: product, filter_option: filter_option, filter_value: filter_value, size_option: size_option %}
+              </li>
+            {% endfor %} 
+            </li>
+          {% else %}
+            <li class="list-view-item product-grid-item">
+              {% render 'product-card-grid', product: product, size_option: size_option %}
+            </li>
+          {% endif %}
+
+        {% else %}
+          <li class="list-view-item product-grid-item">
+            <div class="product-card product-card--list">
+              <a href="{{ item.url }}" class="full-width-link">
+                <span class="visually-hidden">{{ item.title }}</span>
+              </a>
+              <div class="list-view-item__link">
+                <div class="list-view-item__image-column">
+                  {% unless item.image == null %}
+                    {%- assign img_url = item.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                    <div class="list-view-item__image-wrapper product-card__image-wrapper">
+                      <img class="list-view-item__image lazyload"
+                        alt="{{ item.image.alt | escape }}"
+                        data-src="{{ img_url }}"
+                        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                        data-aspectratio="{{ item.image.aspect_ratio }}"
+                        data-sizes="auto"
+                        data-image>
+                    </div>
+                  {% endunless %}
+                </div>
+
+                <div class="list-view-item__title-column">
+                  <div class="list-view-item__title" aria-hidden="true">
+                    <span class="product-card__title">{{ item.title }}</span>
+                  </div>
+                  <div class="list-view-item__content">
+                    {{ item.content | strip_html | truncate: 200 }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    {%- if paginate.pages > 1 -%}
+      {% render 'pagination', paginate: paginate %}
+    {%- endif -%}
+  {% endif %}
+
+  {% if search.results_count < 2  %}
+    <div class="search--less-than-2-results"></div>
+  {% endif %}
+{% endpaginate %}
+
+{% schema %}
+{
+  "name": "Search template",
+  "settings": [
+  ],
+  "presets": [
+    {
+      "name": "Search template"
+    }
+  ],
+	"templates": ["search"]
+}
+{% endschema %}

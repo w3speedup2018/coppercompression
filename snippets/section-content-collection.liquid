@@ -1,0 +1,142 @@
+<div class="featured-collection" id="feature-collection-{{- itemType.id -}}" {{ itemType.shopify_attributes }}>
+  <style>
+    #feature-collection-{{- itemType.id }} {
+      background-color: {{ itemType.settings.color_bg }};
+    }
+  </style>
+  <div class="page-width">
+    {%- if itemType.settings.title != blank or itemType.settings.pretitle != blank-%}
+      <div class="section-header text-center">
+        {%- if itemType.settings.pretitle != blank -%}
+          <h4>{{ itemType.settings.pretitle | escape }}</h4>
+        {%- endif -%}
+        {%- if itemType.settings.title != blank -%}
+          <h2>{{ itemType.settings.title | escape }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- assign collection = collections[itemType.settings.collection] -%}
+
+    {% case itemType.settings.grid %}
+      {% when 2 %}
+        {%- assign max_height = 530 -%}
+      {% when 3 %}
+        {%- assign max_height = 345 -%}
+      {% when 4 %}
+        {%- assign max_height = 400 -%}
+      {% when 5 %}
+        {%- assign max_height = 195 -%}
+    {% endcase %}
+
+    {%- assign product_limit = itemType.settings.grid | times: itemType.settings.rows -%}
+
+    <ul class="product-grid product-grid--{{ itemType.settings.grid }}">
+      {%- assign limit_backup = product_limit -%}
+      {%- for product in collection.products limit: product_limit -%}        
+        {% assign show_variations = itemType.settings.show_variations %}
+
+        {%- liquid
+          assign color_option = false
+          assign size_option = false
+          assign filter_values = ''
+          assign filter_option = false
+          assign show_variations = show_variations | default: false
+          
+          if product.options.size > 0
+            for option in product.options_with_values
+              assign option_name = option.name | downcase
+              if option_name == 'color'
+                assign color_option = option
+              elsif option_name == 'size'
+                assign size_option = option
+              endif
+            endfor
+          endif
+          
+          if color_option
+            assign filter_values = color_option.values
+            assign filter_option = color_option
+            unless show_variations
+              assign filter_values = color_option.values.first | split: ','
+            endunless
+          elsif size_option and show_variations
+            assign left_found = false
+            assign right_found = false
+            assign filter_option = size_option
+            
+            for v in size_option.values
+              assign value = v | downcase
+              if value contains 'left' and left_found == false
+                assign left_found = true
+              elsif value contains 'right' and right_found == false
+                assign right_found = true
+              endif
+            endfor
+            
+            if left_found
+              assign filter_values = 'left'
+              if right_found
+                assign filter_values = filter_values | append: ',right'
+              endif
+            endif
+            
+            if right_found and left_found == false
+              assign filter_values = 'right'
+            endif
+            assign filter_values = filter_values | split: ','
+          endif
+        -%}
+        
+        {% if filter_values.size > 0 %}
+          {% for filter_value in filter_values %}
+            <li class="product-grid-item">
+              {%- render 'product-card-grid', max_height: max_height, product: product, show_vendor:  itemType.settings.show_vendor, filter_option: filter_option, filter_value: filter_value, size_option: size_option -%}
+            </li>
+            {%- assign limit_backup = limit_backup | minus: 1 -%}
+            {% if limit_backup == 0 %}
+              {% break %}
+            {% endif %}
+          {% endfor %} 
+        {% else %}
+          <li class="product-grid-item">
+            {%- render 'product-card-grid', max_height: max_height, product: product, show_vendor:  itemType.settings.show_vendor, size_option: size_option -%}
+          </li>
+          {%- assign limit_backup = limit_backup | minus: 1 -%}
+        {% endif %}
+
+        {% if limit_backup == 0 %}
+          {% break %}
+        {% endif %}
+
+      {%- else -%}
+
+        {% for i in (1..product_limit) %}
+          <li class="product-grid-item grid__item--{{itemType.id}}">
+            <div class="grid-view-item product-card">
+              <a class="grid-view-item__link grid-view-item__image-container full-width-link" href="#">
+                <span class="visually-hidden">{{ 'homepage.onboarding.product_title' | t }}</span>
+              </a>
+              <div class="grid-view-item__image-wrapper">
+                {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+              <div class="h4 grid-view-item__title" aria-hidden="true">{{ 'homepage.onboarding.product_title' | t }}</div>
+              {% render 'product-price' %}
+            </div>
+          </li>
+        {%- endfor -%}
+      {%- endfor -%}
+    </ul>
+
+    {%- if itemType.settings.show_view_all -%}
+      <hr class="hr--invisible" aria-hidden="true" />
+      <div class="text-center">
+        <a href="{{ collection.url }}" class="btn" aria-label="{{ 'collections.general.view_all_label' | t: collection_name: collection.title }}">
+          {{ 'collections.general.view_all' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>

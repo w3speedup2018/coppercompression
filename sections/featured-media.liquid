@@ -1,0 +1,76 @@
+<link href="{{'section-featured-media.css' | asset_url}}" defer="defer" rel="stylesheet">
+
+{%- render 'section-content-featured-media', itemType: section -%}
+
+{% schema %}
+{
+  "name": "Featured Media",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "pretitle",
+      "label": "Pre Heading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Blog posts"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sub Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "align_heading_left",
+      "label": "Heading as sidebar",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "media",
+      "name": "Media",
+      "settings": [
+        {
+          "type": "text",
+          "id": "pretitle",
+          "label": "Pre Heading"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Media"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Click here"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured media",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,202 @@
+{%- style -%}
+{%- if itemType.settings.background_color != blank -%}
+#shopify-section-{{- itemType.id }} {
+  background-color: {{- itemType.settings.background_color -}}
+}
+{%- endif -%}
+{%- if itemType.settings.content_background_color != blank -%}
+#shopify-section-{{- itemType.id }} .feature-columns {
+  background-color: {{- itemType.settings.content_background_color -}}
+}
+{%- endif -%}
+{%- if itemType.settings.text_color != blank -%}
+#shopify-section-{{- itemType.id }} p, #shopify-section-{{- itemType.id }} h2, #shopify-section-{{- itemType.id }} h3, #shopify-section-{{- itemType.id }} a {
+  color: {{- itemType.settings.text_color -}}
+}
+{%- endif -%}
+{%- if itemType.settings.button_text_color != blank -%}
+#shopify-section-{{- itemType.id }} a {
+  color: {{- itemType.settings.button_text_color -}}
+}
+{%- endif -%}
+{%- if itemType.settings.button_color != blank -%}
+#shopify-section-{{- itemType.id }} a {
+  background-color: {{- itemType.settings.button_color -}}
+}
+{%- endif -%}
+{%- if itemType.settings.heading_color != blank -%}
+  #shopify-section-{{- itemType.id }} h2 {
+    color: {{- itemType.settings.heading_color -}}
+  }
+{%- endif -%}
+{%- endstyle -%}
+
+{%- if itemType.settings.background_image -%}
+  {%- assign img = itemType.settings.background_image -%}
+  <div class="lazyload feature-columns-background-image" data-bgset="{% render 'bgset', image: img %}" data-sizes="auto">
+{%- endif -%}
+<div class="{% if itemType.settings.page_layout == 'normal' %}page-width{% else -%}page-width-{{ itemType.settings.page_layout }}{% endif %} feature-columns grid-flex-{{ itemType.settings.mobile_layout }} mobile-page-width-{{ itemType.settings.mobile_page_width }}" {{ itemType.shopify_attributes }}>
+  {%- if itemType.settings.pretitle != blank or itemType.settings.title != blank -%}
+    <div class="section-header feature-columns__heading--{{ itemType.settings.heading_size }}">
+      {%- if itemType.settings.pretitle != blank -%}
+        <h3>{{ itemType.settings.pretitle | escape }}</h3>
+      {%- endif -%}
+      {%- if itemType.settings.title != blank -%}
+        <h2>{{ itemType.settings.title | escape }}</h2>
+      {%- endif -%}
+      {%- if itemType.settings.content != blank -%}
+        <div class="feature-columns__content">{{ itemType.settings.content }}</div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="grid-wrap text-size-{{ itemType.settings.text_size }}">
+    <div class="grid-flex per-row-{{ itemType.settings.per_row }}">
+      {%- assign grid_item_width = 'medium-up--one-third' -%}
+      {%- assign max_height = 345 -%}
+      {%- case itemType.blocks.size -%}
+        {%- when 1 -%}
+          {%- assign grid_item_width = 'medium-up--one-half' -%}
+          {%- assign max_height = 530 -%}
+        {%- when 2 -%}
+          {%- assign grid_item_width = 'medium-up--one-half' -%}
+          {%- assign max_height = 530 -%}
+        {%- when 4 -%}
+          {%- assign grid_item_width = 'medium-up--one-half' -%}
+          {%- assign max_height = 530 -%}
+        {%- when 5 -%}
+          {%- assign grid_item_width = 'medium-up--one-fifth' -%}
+          {%- assign max_height = 530 -%}
+      {%- endcase -%}
+      {% if itemType.blocks %}
+        {%- assign blocks = itemType.blocks -%}
+      {% else %}
+        {%- capture blocks -%}{%- for i in (1..8) -%}block_{{- i -}}_,{%- endfor -%}{%- endcapture -%}
+        {%- assign blocks = blocks | split: ',' -%}
+      {% endif %}
+      {%- for block in blocks -%}
+        {% liquid 
+          if block.settings
+            assign button_label = block.settings.button_label
+            assign button_link = block.settings.button_link
+            assign enable_image = block.settings.enable_image
+            assign image = block.settings.image
+            assign image_dimensions = block.settings.image_dimensions
+            assign title = block.settings.title
+            assign text = block.settings.text
+          else
+            assign block_enabled_key = block | append: 'enabled'
+            unless itemType.settings[block_enabled_key]
+              continue
+            endunless
+            assign button_label_key = block | append: 'button_label'
+            assign button_label = itemType.settings[button_label_key]
+            assign button_link_key = block | append: 'button_link'
+            assign button_link = itemType.settings[button_link_key]
+            assign enable_image_key = block | append: 'enable_image'
+            assign enable_image = itemType.settings[enable_image_key]
+            assign image_key = block | append: 'image'
+            assign image = itemType.settings[image_key]
+            assign image_dimensions_key = block | append: 'image_dimensions'
+            assign image_dimensions = itemType.settings[image_dimensions_key]
+            assign title_key = block | append: 'title'
+            assign title = itemType.settings[title_key]
+            assign text_key = block | append: 'text'
+            assign text = itemType.settings[text_key]
+          endif
+        %}
+        {%- if button_link != blank -%}
+          {%- capture ariaLabel -%}
+            {{- button_label -}}
+            {%- if button_link.type == 'frontpage_link' -%}
+              : {{ 'homepage.general.title' | t -}}
+            {%- elsif button_link.type == 'catalog_link' -%}
+              : {{ 'collections.catalog.title' | t -}}
+            {%- elsif button_link.object.title -%}
+              : {{ button_link.object.title -}}
+            {%- endif -%}
+          {%- endcapture -%}
+          {%- capture href -%}
+            href="{{ button_link }}"
+            {{ ariaLabel}}
+            {%- if button_link contains 'http' %}
+              target="_blank"
+              rel="noopener"
+            {%- endif -%}
+          {%- endcapture -%}
+        {%- endif -%}
+
+        {%- if button_label == blank and button_link != blank -%}
+          <a class="grid-flex__item text-{{ itemType.settings.align_text }}"  {{ block.shopify_attributes }} {{ href }}>
+        {%- else -%}
+          <div class="grid-flex__item text-{{ itemType.settings.align_text }}"  {{ block.shopify_attributes }}>
+        {%- endif -%}
+          {%- if enable_image -%}
+            {%- if image != blank -%}
+              {%- capture img_id -%}TextColumnImage-{{ itemType.id }}-{{ forloop.index }}{%- endcapture -%}
+              {%- capture wrapper_id -%}TextColumnImageWrapper-{{ itemType.id }}-{{ forloop.index }}{%- endcapture -%}
+              {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+              {% comment %} {%- render 'image-style', image: image, height: max_height, wrapper_id: wrapper_id, img_id: img_id -%} {% endcomment %}
+              {%- assign padding_dims = 1 | divided_by: image.aspect_ratio | times: 100 -%}
+              {%- if image_dimensions != blank and image_dimensions contains 'x' -%}
+                {%- assign dims = image_dimensions | split: 'x' -%}
+                {%- if dims.size == 2 -%}
+                  {%- assign padding_dims = dims.first | divided_by: dims.last | times: 100 -%}
+                {%- endif -%}
+                <style>
+                  #{{ wrapper_id }} {
+                    width: {{ dims.first }}px;
+                    max-width: 100%;
+                  }
+                </style>
+              {%- endif -%}
+              <div id="{{ wrapper_id }}" class="feature-row__image-wrapper {%- if itemType.settings.align_image == 'left' %} feature-row__image-wrapper-left{% endif %} js">
+                <div style="padding-top:{{ padding_dims }}%;" data-image-loading-animation>
+                  <img id="{{ img_id }}"
+                      class="feature-row__image lazyload"
+                      data-src="{{ img_url }}"
+                      data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                      data-aspectratio="{{ image.aspect_ratio }}"
+                      data-sizes="auto"
+                      alt="{{ image.alt | escape }}">
+                </div>
+              </div>
+              <noscript>
+                <p>
+                  {{ image | img_url: '480x480', scale: 2 | img_tag: image.alt, 'feature-row__image' }}
+                </p>
+              </noscript>
+            {%- else -%}
+              <p>
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </p>
+            {%- endif -%}
+          {%- endif -%}
+          {%- if title != blank -%}
+            <h3 class="h4">{{ title | escape }}</h3>
+          {%- endif -%}
+          {%- if text != blank -%}
+            <div class="rte-setting">{{ text }}</div>
+          {%- endif -%}
+
+          {%- if button_label != blank and button_link != blank -%}
+            <a class="btn btn--link btn--small" {{ href }}>
+              {{- button_label | escape -}}
+            </a>
+          {%- endif -%}
+        {%- if button_label == blank and button_link != blank -%}
+          </a>
+        {%- else -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- if itemType.blocks.size == 0 -%}
+    {%- render 'no-blocks' -%}
+  {%- endif -%}
+  {%- if itemType.settings.background_image -%}
+    </div>
+  {%- endif -%}
+</div>

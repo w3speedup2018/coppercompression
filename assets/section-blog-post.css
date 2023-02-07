@@ -1,0 +1,13 @@
+.blog-post {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.blog-post__item {
+  -ms-flex: 1 1 33.33333%;
+  flex: 1 1 33.33333%;
+}

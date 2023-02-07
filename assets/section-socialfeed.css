@@ -1,0 +1,131 @@
+.socialfeed_wrapper {
+  overflow: hidden;
+}
+
+.socialfeed_headings {
+  display: flex;
+  justify-content: center;
+  flex-direction: column-reverse;
+}
+
+.socialfeed_byline {
+  margin-bottom: 5.5px;
+  text-transform: uppercase;
+}  
+
+.socialfeed_headline {
+  margin-bottom: 9px;
+  margin-top: 10px;
+}
+
+.socialfeed_content {
+  letter-spacing: 0;
+  max-width: 390px;
+  margin: 30px auto;
+}
+
+.socialfeed_headline {
+  margin-top: 8px;
+  margin-bottom: 20px;
+}
+
+.socialfeed_content p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.socialfeed-container {
+  margin-top: 20px;
+  min-height: 350px;
+}
+
+.socialfeed-container .swiper-slide{
+  box-shadow: 0 6px 32px 6px rgba(0, 0, 0, 0.07);
+  background: #fcfcf9;
+}
+
+.socialfeed-container .swiper-slide > a{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  overflow: hidden;
+}
+
+.instagram-feed-card__photo-wrapper{
+  object-fit: cover;
+  overflow: hidden;
+  position: relative;
+}
+
+.instagram-feed-card {
+  max-width: 275px;
+}
+
+.instagram-feed-card__photo-wrapper img{
+  display: block;
+  max-width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;  
+}
+
+.instagram-feed-card_lower-container{
+  width:275px;
+  height:64px;
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  padding:0 10px;
+  box-sizing: border-box;
+}
+
+.instagram-feed-card_lower-container .media {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.instagram-feed-card_lower-container h4 {
+  margin: 0;
+  font-weight: 200;
+}
+
+.instagram-feed-card_text-container {
+  margin-left: 14px;
+  font-size: 14px;
+  color: #434343;
+  letter-spacing: 0;
+  text-align: left;
+  line-height: 18px;
+}
+
+.instagram-feed-card_text-container h5 {
+  margin-bottom: 0;
+}
+
+.socialfeed_btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+.socialfeed-container .swiper-horizontal > .swiper-pagination-bullets {
+  bottom: -5px;
+}
+
+.instagram-feed-card_lower-container .instagram-feed-icon {
+  margin-left: auto;
+  margin-right: 10px;
+  color: #000;
+  width: 25px;
+  height: 25px;
+}
+
+@media only screen and (max-width: 749px) {
+  .socialfeed_heading-container,
+  .socialfeed_content {
+    padding: 0 40px;
+  }
+}

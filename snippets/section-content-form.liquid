@@ -1,0 +1,7 @@
+{%- if itemType.settings.klaviyoID != blank -%}
+  <div class="page-width" data-section-id="{{ itemType.id }}" data-section-type="form-section" {{ itemType.shopify_attributes }}>
+    <div class="form-section-wrapper form-section-wrapper--{{ itemType.id }}">
+      <div class="klaviyo-form-{{ itemType.settings.klaviyoID }}"></div>
+    </div>
+  </div>
+{%- endif -%}

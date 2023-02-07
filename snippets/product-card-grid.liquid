@@ -1,0 +1,102 @@
+{% comment %}
+    Renders a product card using "Grid" style
+    Accepts:
+    - max_height: {Number} Maximum height of the product's image (required)
+    - product: {Object} Product Liquid object (required)
+    - show_vendor: {Boolean} Show the product's vendor depending on the section setting (optional)
+    - filter_option: {Boolean} Filter product's variants by option (optional)
+    - filter_value: {Boolean} Filter product's variants by option value (optional)
+    - size_option: {Boolean} Sizes available (optional)
+
+    Usage:
+    {% render 'product-card-grid', max_height: max_height, product: product, show_vendor: section.settings.show_vendor %}
+{% endcomment %}
+
+<style>
+  .copper-stars {
+    background-image: url('{{ "cc-stars.png" | asset_url }}');
+  }
+</style>
+
+{%- assign filter_value = filter_value | default: false -%}
+{%- assign filter_option = filter_option | default: false -%}
+{%- assign size_option = size_option | default: false -%}
+{%- assign pdp_url = product.url -%}
+{%- assign preview_image = product.featured_media.preview_image -%}
+{%- assign product_title = product.title | remove: shop.name -%}
+
+{% if filter_option and filter_value %}
+  {%- capture img_id -%}ProductCardImage-{{ section.id }}-{{ product.id }}--{{ filter_option.position }}--{{ filter_value }}{%- endcapture -%}
+  {%- capture wrapper_id -%}ProductCardImageWrapper-{{ section.id }}-{{ product.id }}--{{ filter_option.position }}--{{ filter_value }}{%- endcapture -%}
+  {% assign option = 'option' | append: filter_option.position %}
+  {% assign filter_value = filter_value | downcase %}
+  {% assign is_available = false %}
+
+  {% assign filter_value_capitalized = filter_value | capitalize %}
+  {% assign title_complement = ' - ' | append: filter_value_capitalized  | append: ' ' | append: product.metafields.custom.bodypart %}
+  {% assign product_title = product_title | remove: product.metafields.custom.removable_title_keyword | append: title_complement %}
+
+  {% for v in product.variants %}
+    {% assign option_value = v[option] | downcase %}
+    {% if option_value contains filter_value %}
+      {%- assign active_variant = v -%}
+      {%- assign pdp_url = active_variant.url -%}
+      {% if active_variant.featured_media.preview_image != blank %}
+        {%- assign preview_image = active_variant.featured_media.preview_image -%}
+      {% endif %}
+      {% if active_variant.available %}
+        {% assign is_available = true %}
+        {% break %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+{% else %}
+  {%- capture img_id -%}ProductCardImage-{{ section.id }}-{{ product.id }}{%- endcapture -%}
+  {%- capture wrapper_id -%}ProductCardImageWrapper-{{ section.id }}-{{ product.id }}{%- endcapture -%}
+  {%- assign is_available = product.available -%}
+{% endif %}
+
+{%- assign img_url = preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+<div class="grid-view-item{% unless is_available %} grid-view-item--sold-out{% endunless %} product-card">
+  <a class="grid-view-item__link grid-view-item__image-container full-width-link" href="{{ pdp_url }}">
+    <span class="visually-hidden">{{ product.title }}</span>
+  </a>
+
+  <div class="product-card__image-with-placeholder-wrapper" data-image-loading-animation>
+    <div id="{{ wrapper_id }}" class="grid-view-item__image-wrapper product-card__image-wrapper js">
+      {%- if is_available and product.compare_at_price_min > product.price_min -%}
+      {%- capture discount -%}{{ product.compare_at_price_min | minus:product.price_min | times:100.0 | divided_by:product.compare_at_price_min | round }}%{%- endcapture -%}
+      <div class="hc-sale-tag"><span>{{ discount }}</span></div>
+      {%- endif -%}
+      <div class="image-div">
+        <img id="{{ img_id }}"
+              class="grid-view-item__image lazyload"
+              alt="{{ preview_image.alt }}"
+              data-src="{{ img_url }}"
+              data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+              data-aspectratio="{{ preview_image.aspect_ratio }}"
+              data-sizes="auto"
+              data-image>
+      </div>
+    </div>
+  </div>
+
+  <noscript>
+    {%- capture image_size -%}{{ max_height }}x{{ max_height }}{%- endcapture -%}
+    <img class="grid-view-item__image" src="{{ preview_image | img_url: image_size, scale: 2 }}" alt="{{ preview_image.alt }}" style="max-width: {{ max_height | times: preview_image.aspect_ratio }}px;">
+  </noscript>
+
+    {%- assign star_var = product.metafields.yotpo.reviews_average | times: 2 | round | divided_by: 2.0 | times: 10 | round -%}
+    <div class="copper-review-stars-contain">
+      <div class="copper-stars copper-stars-{{ star_var }}"></div>
+      <p>{{ product.metafields.yotpo.reviews_count }} Reviews</p>
+    </div>
+
+    <div class="product-shim">
+      <div class="h4 grid-view-item__title product-card__title" aria-hidden="true">{{ product_title }}</div>
+      {%- render 'product-price-listing', product: product, show_vendor: show_vendor, filter_value: filter_value, filter_option: filter_option, active_variant: active_variant, is_available: is_available, size_option: size_option -%}
+    </div>
+
+</div>

@@ -1,0 +1,131 @@
+{%- case itemType.settings.height -%}
+  {%- when 'small' -%}
+    {%- assign mobile_height = 175 -%}
+    {%- assign desktop_height = 475 -%}
+  {%- when 'medium' -%}
+    {%- assign mobile_height = 270 -%}
+    {%- assign desktop_height = 650 -%}
+  {%- when 'large' -%}
+    {%- assign mobile_height = 300 -%}
+    {%- assign desktop_height = 800 -%}
+{%- endcase -%}
+
+{%- if itemType.settings.image == blank -%}
+  {% style %}
+    @media screen and (max-width: 749px) {
+      .video-section-wrapper--{{ itemType.id }} .video__image {
+        opacity: 0;
+      }
+    }
+  {% endstyle %}
+{%- endif -%}
+<div class="page-width-wide" data-section-id="{{ itemType.id }}" data-section-type="video-section" {{ itemType.shopify_attributes }}>
+  {%- if itemType.settings.video_link != blank or itemType.settings.video_file != blank -%}
+    <div class="video-section-wrapper
+                video-section-wrapper--{{ itemType.settings.height }}
+                video-section-wrapper--min-height
+                {% if itemType.settings.style == 'background' %} video-background-wrapper
+                  {% unless itemType.settings.show_overlay %} video-background-wrapper--no-overlay{% endunless %}
+                {% endif %}
+                video-section-wrapper--{{ itemType.id }}"
+                data-desktop-height="{{ desktop_height }}"
+                data-mobile-height="{{ mobile_height }}">
+      {%- if itemType.settings.show_overlay -%}<div class="video__overlay"></div>{%- endif -%}
+      <button type="button"
+              class="text-link video-control__close-wrapper
+              {% if itemType.settings.style == 'background' %} video-control__close-background{% endif %}"
+              data-controls="Video-{{ itemType.id }}">
+        <span class="video-control video-control__close">
+          {% render 'icon-close' %}
+          <span class="icon__fallback-text">{{ 'sections.video.close' | t: video_title: '[video_title]' }}</span>
+        </span>
+      </button>
+      {%- if itemType.settings.video_file != blank -%}
+        <div id="Video-{{ itemType.id }}" class="video{% if itemType.settings.style == 'background' %} video--background{% endif %} video--{{ itemType.settings.style }}" data-local-video data-type="local">
+          <video src="{{ itemType.settings.video_file | file_url }}" playsinline controls></video>
+        </div>
+      {%- elsif itemType.settings.video_link != blank -%}
+        <div id="Video-{{ itemType.id }}"
+            class="video{% if itemType.settings.style == 'background' %} video--background{% endif %}
+            video--{{ itemType.settings.style }}"
+            data-id="{{ itemType.settings.video_link.id }}"
+            data-type="{{ itemType.settings.style }}"></div>
+      {%- endif -%}
+
+      {%- if itemType.settings.image == blank -%}
+        <div class="video__image js">
+          <div class="placeholder-background">
+            {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+            {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="video__image box ratio-container lazyload js"
+              data-bgset="{% render 'bgset', image: itemType.settings.image %}"
+              data-sizes="auto"
+              data-parent-fit="contain"
+              style="background-position: {{ itemType.settings.image_position }};"
+              data-image-loading-animation>
+        </div>
+      {%- endif -%}
+
+      <noscript>
+        <div class="video__image"{% if itemType.settings.image %} style="background-image: url('{{ itemType.settings.image | img_url: '2048x' }}'); background-position: {{ itemType.settings.image_position }};"{% endif %}>
+          {%- if itemType.settings.image == blank -%}
+            <div class="placeholder-background">
+              {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+              {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {%- endif -%}
+        </div>
+      </noscript>
+
+      <div class="video__text-content text-center">
+        <div class="page-width">
+          {%- unless itemType.settings.video_title == blank -%}
+            <h2 class="h1 mega-title video__title{% if itemType.settings.text_size == 'large' %} mega-title--large{% endif %}">
+              {{ itemType.settings.video_title | escape }}
+            </h2>
+          {%- endunless -%}
+
+          {%- unless itemType.settings.style == 'background' -%}
+            <div class="video-control__play-wrapper{% if itemType.settings.video_title != blank %} video-control__play-wrapper--with-text{% endif %}">
+              {%- if itemType.settings.video_link != blank -%}
+                <div class="video-play-loader"></div>
+              {%- endif -%}
+              <button type="button" class="btn video-control video-control__play" data-controls="Video-{{ itemType.id }}">
+                {% render 'icon-play' %}
+                <span class="icon__fallback-text">{{ 'sections.video.play' | t: video_title: '[video_title]' }}</span>
+              </button>
+            </div>
+          {%- endunless -%}
+        </div>
+      </div>
+
+      <div class="video-control__play-wrapper-mobile">
+        {%- if itemType.settings.video_link != blank -%}
+          <div class="video-play-loader"></div>
+        {%- endif -%}
+        <button type="button" class="btn video-control video-control__play" data-controls="Video-{{ itemType.id }}">
+          {% render 'icon-play' %}
+          <span class="icon__fallback-text">{{ 'sections.video.play' | t: video_title: '[video_title]' }}</span>
+        </button>
+      </div>
+
+      <button type="button" class="video__pause{% unless itemType.settings.style == 'background' %} visually-hidden" tabindex="-1{% endunless %}" data-id="{{ itemType.id }}" aria-live="polite" aria-pressed="false" data-controls="Video-{{ itemType.id }}">
+        <span class="video__pause-stop">
+          {% render 'icon-pause' %}
+          <span class="icon__fallback-text">{{ 'sections.video.pause' | t: video_title: '[video_title]' }}</span>
+        </span>
+        <span class="video__pause-resume">
+          {% render 'icon-play' %}
+          <span class="icon__fallback-text">{{ 'sections.video.resume' | t: video_title: '[video_title]' }}</span>
+        </span>
+      </button>
+    </div>
+  {%- else -%}
+    <div class="placeholder-noblocks">
+      {{ 'homepage.onboarding.no_content' | t }}
+    </div>
+  {%- endif -%}
+</div>

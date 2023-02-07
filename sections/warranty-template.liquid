@@ -1,0 +1,61 @@
+<div class="page-width page-width-sidebar sidebar-page">
+  <div class="section-header">
+    <h3>{{ shop.name }}</h3>
+    <h1>{{ section.settings.title | default: page.title }}</h1>
+  </div>
+</div>
+<div class="page-width page-width-sidebar">
+  <aside class="sidebar section-header" role="complementary">
+    <h3>{{ section.settings.sidebar_title }}</h3>
+    {{- section.settings.sidebar_content -}}
+  </aside>
+
+  <div class="warranty-form contact-form form-vertical">
+    {% if section.settings.subtitle != blank %}<h3>{{ section.settings.subtitle }}</h3>{% endif %}
+    {% if page.content.size > 0 %}
+      <div class="rte">
+        {{ page.content }}
+      </div>
+    {% endif %}
+    {% if section.settings.form_title != blank %}<h2 class="contact-form-heading">{{ section.settings.form_title }}</h2>{% endif %}
+    <div class="klaviyo-form-R4PUMc"></div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Warranty form",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "label": "Sidebar Title"
+    },
+    {
+      "type": "richtext",
+      "id": "sidebar_content",
+      "label": "Sidebar Content"
+    }
+  ]
+}
+{% endschema %}

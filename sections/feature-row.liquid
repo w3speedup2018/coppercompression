@@ -1,0 +1,265 @@
+{%- render 'section-content-feature-row', itemType: section -%}
+
+{% schema %}
+{
+  "name": "Image with text",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "round_image",
+      "label": "Round image",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "page_layout",
+      "label": "Layout",
+      "default": "wide",
+      "options": [
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "slim",
+          "label": "Slim"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "stacked",
+          "label": "Stacked"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "default": "image_first",
+      "options": [
+        {
+          "value": "image_first",
+          "label": "Image first"
+        },
+        {
+          "value": "text_first",
+          "label": "Text first"
+        },
+        {
+          "value": "hide_image",
+          "label": "Hide image"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "pretitle",
+      "label": "Pre Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "pretitle_is_page_title",
+      "default": false,
+      "label": "Use pre heading as page title (h1 tag will be used)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Image with text"
+    },
+    {
+      "type": "checkbox",
+      "id": "title_is_page_title",
+      "default": false,
+      "label": "Use heading as page title (h1 tag will be used)"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "bullets",
+      "label": "Bullets"
+    },
+    {
+      "type": "checkbox",
+      "id": "stars",
+      "label": "Show 5 Stars",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Subtext"
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Subtext 2"
+    },
+    {
+      "type": "richtext",
+      "id": "text_4",
+      "label": "Subtext 3"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "info": "If left blank, button link will apply to the entire block"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "block_button",
+      "label": "Apply link to entire block",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "align_text",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centered"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "font_size",
+      "label": "Font Style",
+      "default": "large",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "large_thin",
+          "label": "Large thin"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "default": "normal",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "large-knockout",
+          "label": "Large knockout"
+        }
+      ]
+    },
+    {
+      "type": "product",
+      "id": "product_add_to_cart",
+      "label": "Quick add product",
+      "info": "If a product is selected, the button will add it to the cart when clicked. Otherwise it will redirect to the button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_margin",
+      "label": "Margin around",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Content Background"
+    },
+    {
+      "type": "color",
+      "id": "section_color_bg", 
+      "label": "Section Background"
+    },
+    {
+      "type": "color",
+      "id": "color_preheading",
+      "label": "Preheading color"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Heading color"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+{% comment %}
+    Renders an Image
+
+    Accepts:
+    - image: {Object} Image object
+
+    Usage:
+    {% render 'image', img: image %}
+{% endcomment %}
+
+{% if img != blank %}
+  <img
+    srcset="{%- if img.width >= 165 -%}{{ img | image_url: width: 165 }} 165w,{%- endif -%}
+      {%- if img.width >= 360 -%}{{ img | image_url: width: 360 }} 360w,{%- endif -%}
+      {%- if img.width >= 535 -%}{{ img | image_url: width: 535 }} 535w,{%- endif -%}
+      {%- if img.width >= 750 -%}{{ img | image_url: width: 750 }} 750w,{%- endif -%}
+      {%- if img.width >= 1070 -%}{{ img | image_url: width: 1070 }} 1070w,{%- endif -%}
+      {%- if img.width >= 1500 -%}{{ img | image_url: width: 1500 }} 1500w,{%- endif -%}
+      {{ img | image_url }} {{ img.width }}w"
+    src="{{ img | image_url: width: 165 }}"
+    sizes="auto"
+    alt="{{ img.alt | escape }}"
+    loading="lazy"
+    width="{{ img.width }}"
+    height="{{ img.height }}"
+  >
+{% endif %}

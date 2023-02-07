@@ -1,0 +1,60 @@
+{%- assign show_announcement = false -%}
+{%- assign slide_index = 0 -%}
+{%- assign announcement_block_count = 0 -%}
+{%- assign free_shipping_message_shown = false -%}
+{%- for block in section.blocks -%}
+  {%- if block.type == 'announcement' -%}
+    {%- assign show_announcement = true -%}
+    {%- assign announcement_block_count = announcement_block_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<style>
+  .announcement-bar {
+    background-color: {{ section.settings.color_bg }};
+  }
+  .announcement-bar__text {
+    color: {{ section.settings.color_text }};
+  }
+</style>
+
+{% if show_announcement %}
+  <div class="announcement-bar {% if announcement_block_count > 1 %} announcement-bar__slider {% endif %}" data-announcement-speed="{{ section.settings.announcement_speed | times: 1000 }}" >
+    <div data-slider>
+      <div data-slider-container>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'announcement' and block.settings.announcement_text != blank -%}          	
+            <div id="slickSlide{{ block.id }}" 
+                  data-slider-slide-index="{{slide_index}}"
+                  data-slider-item>
+              {%- if block.settings.announcement_link != blank -%}
+                <a class="announcement-bar__link" href="{{ block.settings.announcement_link }}">
+              {%- endif -%}
+              <span class="announcement-bar__text {% if block.settings.free_shipping_message and free_shipping_message_shown == false %} announcement-bar__free-shipping__text {% endif %}">
+                {%- if block.settings.free_shipping_message and free_shipping_message_shown == false -%}
+                  {%- if cart.total_price > 0 and cart.total_price < 5000 -%}
+                    {%- assign amount = 5000 | minus: cart.total_price | money_without_trailing_zeros -%}
+                    {{ 'cart.shipping.amount_to_qualify_for_free_shipping' | t: amount: amount }}
+                  {%- elsif cart.total_price > 5000 -%}
+                    {{ 'cart.shipping.qualifies_for_free_shipping' | t }}
+                  {%- else -%}
+                    {{ block.settings.announcement_text | escape }}
+                  {%- endif -%}
+                {%- else -%}
+                  {{ block.settings.announcement_text | escape }}
+                {%- endif -%}
+              </span>
+              {%- if block.settings.announcement_link != blank -%}
+                </a>
+              {%- endif -%}
+            </div>
+            {%- assign slide_index = slide_index | plus: 1 -%}
+            {%- if block.settings.is_free_shipping_message and free_shipping_message_shown == false -%}
+              {%- assign free_shipping_message_shown = true -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{% endif %} 

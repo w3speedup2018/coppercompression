@@ -1,0 +1,204 @@
+<style>
+  #feature-row-{{- itemType.id -}} {
+    background-color: {{ itemType.settings.color_bg }};
+    {% if itemType.settings.border_color != blank %}
+      border-bottom: 4px solid {{ itemType.settings.border_color }};
+    {% endif %}
+  }
+  #feature-row-{{- itemType.id }} p {
+    color: {{ itemType.settings.color_text }};
+  }
+
+  #feature-row-{{- itemType.id }} .featured-row__subtext .featured-row__bullets {
+    color: {{ itemType.settings.color_text }};
+  }
+
+  #feature-row-{{- itemType.id }} .h3, #feature-row-{{- itemType.id }} .h4 {
+    color: {{ itemType.settings.color_heading }};
+  }
+  {% if itemType.settings.section_color_bg != blank %}
+    #shopify-section-{{- itemType.id }} {
+      background-color: {{ itemType.settings.section_color_bg }};
+    }
+  {% endif %}
+  {% if itemType.settings.button_style == 'large-knockout' %}
+    #shopify-section-{{- itemType.id }} .btn {
+      background-color: {{ itemType.settings.color_text }};
+      color: {{ itemType.settings.color_bg }}
+    }
+  {% endif %}
+
+  {% unless itemType.settings.remove_margin %}
+    #shopify-section-{{- itemType.id }} .feature-row {
+      margin: 0 auto;
+    }
+  {% endunless %}
+
+</style>
+
+{%- liquid
+  assign quick_add_active = false
+  if itemType.settings.product_add_to_cart != blank and itemType.settings.product_add_to_cart.available
+    assign quick_add_active = true
+    assign add_to_cart_single_option = true
+    assign quick_add_product = itemType.settings.product_add_to_cart
+    assign preview_variant = itemType.settings.product_add_to_cart.first_available_variant
+
+    if quick_add_product.variants.size > 1
+      assign product_options = quick_add_product.options | join: ',' | downcase
+
+      if product_options contains 'size'
+        assign add_to_cart_single_option = false
+        assign preview_variants = quick_add_product.variants | where: 'available'
+        assign filter_by_color = false
+        assign option_size_index = 0
+        
+        if product_options contains 'color'
+          for option in quick_add_product.options
+            assign downcase_option = option | downcase
+            if downcase_option == 'color' 
+              assign colorIndex = forloop.index0
+              assign currentColor = preview_variant.options[colorIndex]
+              assign filter_by_color = true
+            elsif downcase_option == 'size'
+              assign option_size_index = forloop.index0
+            endif 
+          endfor
+        endif
+      endif
+    endif
+  endif
+-%}
+
+<div class="{% if itemType.settings.page_layout == 'normal' %}page-width page-width-mobile {% else %}page-width-{{ itemType.settings.page_layout }}{% endif %}" {{ itemType.shopify_attributes }}>
+  {%- capture image_layout -%}
+    <div class="feature-row__item feature-row__item--image {% if itemType.settings.round_image %} round-image{% endif %}">
+      {%- if itemType.settings.image != blank -%}
+        {%- capture img_id -%}FeatureRowImage-{{ itemType.id }}{%- endcapture -%}
+        {%- capture wrapper_id -%}FeatureRowImageWrapper-{{ itemType.id }}{%- endcapture -%}
+        {%- assign img_url = itemType.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+        {%- render 'image-style', image: itemType.settings.image, height: 591, wrapper_id: wrapper_id, img_id: img_id -%}
+        <div id="{{ wrapper_id }}" class="feature-row__image-wrapper js">
+          <div style="padding-top:{{ 1 | divided_by: itemType.settings.image.aspect_ratio | times: 100}}%;" data-image-loading-animation>
+            <img id="{{ img_id }}"
+                 class="feature-row__image lazyload"
+                 data-src="{{ img_url }}"
+                 data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                 data-aspectratio="{{ itemType.settings.image.aspect_ratio }}"
+                 data-sizes="auto"
+                 alt="{{ itemType.settings.image.alt | escape }}">
+          </div>
+        </div>
+
+        <noscript>
+          {{ itemType.settings.image | img_url: '600x600', scale: 2 | img_tag: itemType.settings.image.alt, 'feature-row__image' }}
+        </noscript>
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+  {%- endcapture -%}
+
+  {%- capture feature_row_classes -%}
+    feature-row
+
+    feature-row-image_{{ itemType.settings.layout }}
+
+    {%- if itemType.settings.mobile_layout == 'text_first' %}
+      mobile-reverse
+    {%- elsif itemType.settings.mobile_layout == 'hide_image' %}
+      mobile-hide-image
+    {% endif %}
+  {%- endcapture -%}
+
+  {% if itemType.settings.block_button or itemType.settings.button_label == blank and itemType.settings.button_link != blank %}
+    <a class="{{- feature_row_classes -}}" id="feature-row-{{- itemType.id -}}" href="{{ itemType.settings.button_link }}" title="{{ itemType.settings.button_link.title }}">
+  {%- else -%}
+    <div class="{{- feature_row_classes -}}" id="feature-row-{{- itemType.id -}}">
+  {%- endif -%}
+    {%- if itemType.settings.layout == 'left' or itemType.settings.layout == 'stacked' -%}
+      {{ image_layout }}
+    {%- endif -%}
+
+    <div class="feature-row__item feature-row__text feature-row__text--{{ itemType.settings.layout }} text-{{- itemType.settings.align_text }} feature-row__font--{{ itemType.settings.font_size }}">
+      {%- if itemType.settings.pretitle != blank -%}
+        {% if itemType.settings.pretitle_is_page_title %} <h1 {% else %} <h3 {% endif %} class="h4">{{ itemType.settings.pretitle | escape }}{% if itemType.settings.pretitle_is_page_title %} </h1> {% else %} </h3> {% endif %}
+      {%- endif -%}
+      {%- if itemType.settings.title != blank -%}
+        {% if itemType.settings.title_is_page_title %} <h1 {% else %} <h2 {% endif %} class="h3">{{ itemType.settings.title | escape }}{% if itemType.settings.title_is_page_title %} </h1> {% else %} </h2> {% endif %}
+      {%- endif -%}
+      {%- if itemType.settings.text != blank -%}
+        <div class="rte rte-setting featured-row__subtext">
+          {{ itemType.settings.text }}
+
+          {%- if itemType.settings.bullets != blank -%}
+            <ul class="featured-row__bullets">
+              {{ itemType.settings.bullets | replace: "<p>", "<li>" | replace: "</p>", "</li>" }}
+            </ul>
+          {%- endif -%}
+
+          {%- if itemType.settings.stars != blank -%}
+            <img width="140" src="{{ 'stars.png' | asset_url }}" />
+          {%- endif -%}
+          {%- if itemType.settings.text_2 != '' -%}
+            <p class="featured-row__subtext-2">{{ itemType.settings.text_2 }}</p>
+          {%- endif -%}
+          {%- if itemType.settings.text_3 != '' -%}
+            <p class="featured-row__subtext-3">{{ itemType.settings.text_3 }}</p>
+          {%- endif -%}
+          {%- if itemType.settings.text_4 != '' -%}
+            {{ itemType.settings.text_4 }}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if itemType.settings.button_label != blank -%}
+        {%- if itemType.settings.button_link != blank or quick_add_active -%}
+        
+          {%- capture ariaLabel -%}
+            {{- itemType.settings.button_label -}}
+            {%- if itemType.settings.button_link.type == 'frontpage_link' -%}
+              : {{ 'homepage.general.title' | t -}}
+            {%- elsif itemType.settings.button_link.type == 'catalog_link' -%}
+              : {{ 'collections.catalog.title' | t -}}
+            {%- elsif itemType.settings.button_link.object.title -%}
+              : {{ itemType.settings.button_link.object.title -}}
+            {%- endif -%}
+          {%- endcapture -%}
+          <div class="featured-row__btn-wrapper">
+            {%- unless itemType.settings.block_button -%}
+              <a href="{{ itemType.settings.button_link }}"
+                class="btn btn--{{ itemType.settings.button_style }}"
+                aria-label="{{ ariaLabel }}"
+                {%- if quick_add_active -%}{%- if add_to_cart_single_option -%} data-variant-id="{{ preview_variant.id }}" data-quick-add {%- else -%} data-quick-add-sizes {% endif -%}{%- endif -%}>
+                {{- itemType.settings.button_label | escape -}}
+              </a>
+            {%- else -%}
+              <span
+                class="btn btn--{{ itemType.settings.button_style }}"
+                {%- if quick_add_active -%}{%- if add_to_cart_single_option -%} data-variant-id="{{ preview_variant.id }}" data-quick-add {%- else -%} data-quick-add-sizes {% endif -%}{%- endif -%}>
+                {{- itemType.settings.button_label | escape -}}
+              </span>
+            {%- endunless -%}
+            {%- if quick_add_active and add_to_cart_single_option == false and preview_variants.size > 0 -%}
+              <div class="data-quick-add__wrapper">
+                {% for v in preview_variants %}
+                  {% if filter_by_color == false or v.options[colorIndex] == currentColor %}
+                    <div data-variant-id="{{ v.id }}" data-quick-add>{{ v.options[option_size_index] | remove: 'Hand '}}</div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {%- endif-%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- if itemType.settings.layout == 'right' -%}
+      {{ image_layout }}
+    {%- endif -%}
+  {% if itemType.settings.block_button or itemType.settings.button_label == blank and itemType.settings.button_link != blank %}
+    </a>
+  {% else %}
+    </div>
+  {%- endif -%}
+</div>

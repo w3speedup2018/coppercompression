@@ -1,0 +1,389 @@
+{% assign sectionClass =  'socialfeed--' | append: section.id %}
+{{ 'section-socialfeed.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}  
+  .section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};  
+    color: {{ section.settings.text_color }};
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- capture sliderOptions -%}
+  {
+    "centeredSlides": true,
+    "slidesPerView": 1,
+    "spaceBetween": 20,
+    "pagination": {
+      "el": ".swiper-pagination",
+      "clickable": true
+    },
+    "breakpoints": {
+      "450": {
+        "slidesPerView": "auto"
+      }
+    }
+  }  
+{%- endcapture -%}
+
+<div class="socialfeed_wrapper socialfeed_container {{ sectionClass }}">
+  <div class="section-{{ section.id }} section-{{ section.id }}-padding">
+    <div class="text-{{ section.settings.content_alignment }} {% unless section.settings.page_layout == 'full-width'%}{% if section.settings.page_layout == 'normal' %}page-width{% else -%}page-width-{{ section.settings.page_layout }}{% endif %}{% endunless %}">
+      <div class="socialfeed_heading-container {{sectionClass}}">
+        <div class="socialfeed_headings section-header">
+          <h2 class="socialfeed_headline rte" style="color: {% if section.settings.custom_color %}{{ section.settings.color }}{% else %}{{ section.settings.text_color }}{% endif %};">
+            {{ section.settings.heading | replace: 'p>', 'span>' }}
+          </h2>
+          <h4 class="socialfeed_byline {{sectionClass}}">{{section.settings.byline}}</h4>
+        </div> 
+      </div>
+      
+      <div class="socialfeed-container {% unless section.settings.page_layout == 'wide' %}mobile--full-width{% endunless %}">
+        {% if section.blocks.size > 0 %}
+          <swiper-slider data-swiper-options='{{sliderOptions}}'>
+            <div class="swiper">
+              <div class="swiper-wrapper">
+                {% for block in section.blocks %}
+                  <div class="swiper-slide instagram-feed-card">
+                    <a href="{{block.settings.instagram_url.url}}" target="_blank" {{ block.shopify_attributes }}>
+                      <div class="instagram-feed-card__photo-wrapper media media--square">
+                        {% unless sizes %}
+                          {%- assign sizes = "375,750,1100,1500,1780,2000,2800" -%}
+                        {% endunless %}
+
+                        {%- assign sizesArray = sizes | split: ',' -%}
+
+                        {%- assign srcSet = "" -%}
+                        {% for size in sizesArray %}
+                          {%- assign sizeInt = sizse |plus : 0 -%}
+                          {% if image.width >= sizeInt  %}
+                            {%- assign resString = size | append: "x" -%}
+                            {%- assign widthString = " " |append: size | append: "w," -%}
+                            {%- assign url = block.settings.image | img_url: resString -%}
+                            {%- assign srcSet = srcSet | append: url | append: widthString -%}
+                          {% endif %}
+                        {% endfor %}
+                        {%- comment -%}Stripping off trailing comma{%- endcomment -%}
+                        {% assign srcSetLength = srcSet | size | minus: 1 %}
+                        {% assign srcSet = srcSet | slice: 0, srcSetLength %}
+
+                        {%- comment -%}Creating Url{%- endcomment -%}
+                        {%- assign url = block.settings.image | img_url: defaultRes -%}
+                        {% if defaultRes == blank %}
+                          {%- assign url = block.settings.image | img_url: '750x' -%}
+                        {% endif %}
+                          <img srcset="{{srcSet}}"
+                            {% if imageId %}
+                              id="{{imageId}}"
+                            {% endif %}
+                            sizes="auto"
+                            src="{{ url }}"
+                            loading="lazy"
+                            alt="{{ block.settings.image.alt | escape }}"
+                            width="{{ block.settings.image.width }}"
+                            height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
+                          >
+                      </div>
+                      <div class="instagram-feed-card_lower-container">
+                      
+                        {% assign image = block.settings.account_image %}
+                        <div class="media media--circle">
+                          {% render 'image', img: image %}
+                        </div>
+
+                        <div class="instagram-feed-card_text-container">
+                          <h5>{{block.settings.username}}</h5>
+                          <a href="{{block.settings.useraccount_link}}" target="_blank">{{block.settings.usertag}}</a>
+                        </div>
+
+                        {% if block.settings.social_icon != "" %}
+                          <div class="instagram-feed-icon media">
+                          
+                            {% case block.settings.social_icon %}
+                              {% when 'instagram'%}
+                                {% render 'icon-instagram' %}
+                              {% when 'tiktok'%}
+                                {% render 'icon-tiktok' %}
+                              {% when 'facebook'%}
+                                {% render 'icon-facebook' %}
+                              {% when 'pinterest'%}
+                                {% render 'icon-pinterest' %}
+                              {% when 'twitter'%}
+                                {% render 'icon-twitter' %}
+                              {% when 'youtube'%}
+                                {% render 'icon-youtube' %}
+                              {% when 'tumblr'%}
+                                {% render 'icon-tumblr' %}
+                              {% when 'snapchat'%}
+                                {% render 'icon-snapchat' %}                            
+                            {% endcase %}                            
+                          </div>
+                        {% endif %}
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </swiper-slider>
+        {% endif %}
+      </div>
+      <div class="socialfeed_content">
+        {{section.settings.content}}
+      </div>
+      {%- if section.settings.button_link != blank and section.settings.button_label -%}
+        <div class="socialfeed_btn-container">
+            <a href="{{ section.settings.button_link }}" class="button button-mb--full-width">{{ section.settings.button_label | escape }}</a>            
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Social Feed",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Headline",
+      "default": "<p>Announce something here</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_color",
+      "default": false,
+      "label": "Use custom color"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Color",
+      "default": "#000"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "byline",
+      "label": "Byline"
+    },
+    {
+      "id": "content",
+      "type": "text",
+      "label": "Content"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Follow us",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFF"
+    },
+    {
+      "type": "select",
+      "id": "page_layout",
+      "label": "Layout",
+      "default": "wide",
+      "options": [
+        {
+          "value": "full-width",
+          "label": "Full width"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "slim",
+          "label": "Slim"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centered"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "justify",
+          "label": "Justified"
+        }
+      ],
+      "default": "center",
+      "label": "Text alignment"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "post",
+      "name": "Post",
+      "settings": [
+        {
+          "id": "instagram_url",
+          "type": "url",
+          "label": "Post Link"
+        },
+        {
+          "type": "text",
+          "id": "username",
+          "label": "Username"
+        },
+        {
+          "type": "text",
+          "id": "usertag",
+          "label": "User Tag"
+        },
+        {
+          "type": "url",
+          "id": "useraccount_link",
+          "label": "User Account Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "account_image",
+          "label": "Account Image"
+        },
+        {
+          "type": "select",
+          "id": "social_icon",
+          "label": "Social media icon",
+          "default": "",
+          "options": [
+            {
+              "value": "",
+              "label": "None"
+            },
+            {
+              "value": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "value": "tiktok",
+              "label": "Tiktok"
+            },
+            {
+              "value": "snapchat",
+              "label": "Snapchat"
+            },
+            {
+              "value": "youtube",
+              "label": "Youtube"
+            },
+            {
+              "value": "tumblr",
+              "label": "Tumblr"
+            },
+            {
+              "value": "pinterest",
+              "label": "Pinterest"
+            },
+            {
+              "value": "facebook",
+              "label": "Facebook"
+            },
+            {
+              "value": "twitter",
+              "label": "Twitter"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social Feed",
+      "category": "Components"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,216 @@
+{%- style -%}
+
+  {%- if itemType.settings.hero_layout == 'full_width' and itemType.settings.hero_size == 'adapt' -%}
+    {%- if itemType.settings.image.aspect_ratio == blank -%}
+      {%- assign min_aspect_ratio = 2.0 -%}
+    {%- else -%}
+      {%- assign min_aspect_ratio = itemType.settings.image.aspect_ratio -%}
+    {%- endif -%}
+    {%- assign wrapper_height = 100 | divided_by: min_aspect_ratio -%}
+      .hero-{{ itemType.id }} {
+        height: {{- wrapper_height -}}vw !important;
+      }
+  {%- endif -%}
+
+  {%- if itemType.settings.background != blank -%}
+    #hero-section-{{- itemType.id -}} {
+      background-color: {{ itemType.settings.background }};
+    }
+  {%- endif -%}
+
+  {%- if itemType.settings.content_bg != blank -%}
+    #hero-section-{{ itemType.id }} .hero-fixed-width__content, #hero-section-{{ itemType.id }} .hero__inner {
+      background-color: {{ itemType.settings.content_bg }};
+    }
+  {%- endif -%}
+
+  {%- if itemType.settings.title_color != blank -%}
+    #hero-section-{{ itemType.id }} .mega-title, #hero-section-{{ itemType.id }} .mega-subtitle strong {
+      color: {{ itemType.settings.title_color }}
+    }
+  {%- endif -%}
+
+{%- endstyle -%}
+<div data-section-id="{{ itemType.id }}" data-section-type="hero-section" {{ itemType.shopify_attributes }} id="hero-section-{{ itemType.id }}">
+
+{%- if itemType.settings.button_link != blank -%}
+  <a class='hero-link-wrap' href="{{ itemType.settings.button_link }}">
+{%- endif -%}
+
+  {%- if itemType.settings.hero_layout == 'fixed_width' -%}
+    <div class="page-width page-width-hero page-width-hero--{{ itemType.settings.hero_size }}">
+  {%- endif -%}
+  {%- assign img_url = itemType.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+  {%- assign mobile_img_url = itemType.settings.mobile_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+  {%- if itemType.settings.hero_layout == 'fixed_width' and itemType.settings.hero_size ==  'adapt' -%}
+    {%- assign slide_width = 1420 -%}
+    {%- assign min_aspect_ratio = itemType.settings.image.aspect_ratio | default: 2.0 -%}
+    <div class="hero-fixed-width hero--adapt"
+         id="Hero-{{ itemType.id }}"
+         data-layout="{{ itemType.settings.hero_layout }}"
+         data-image-loading-animation
+         {%- if itemType.settings.image != blank %} style="padding-bottom: {{ 100.0000 | divided_by: itemType.settings.image.aspect_ratio }}%"{%- endif -%}>
+      {%- if itemType.settings.image.width < max_width -%}
+        {%- assign slide_width = itemType.settings.image.width -%}
+      {%- endif -%}
+      <div class="hero-fixed-width__content">
+        {%- if itemType.settings.icon != blank -%}
+          {%- assign icon_url = itemType.settings.icon | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+          <img class="hero__icon lazyload"
+              data-src="{{ icon_url }}"
+              data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+              data-aspectratio="{{ itemType.settings.icon.aspect_ratio }}"
+              data-sizes="auto"
+              alt="{{ itemType.settings.icon.alt | escape }}">
+          <noscript>
+            {{ itemType.settings.icon | img_url: '100x100', scale: 2 | img_tag: itemType.settings.icon.alt, 'hero__icon' }}
+          </noscript>
+        {%- endif -%}
+        {%- if itemType.settings.pretitle != blank -%}
+          <h3 class="h2 pre-title{% if itemType.settings.text_size == 'large' %} pre-title--large{% endif %}">{{ itemType.settings.pretitle | escape }}</h2>
+        {%- endif -%}
+        {%- if itemType.settings.title != blank -%}
+          <h2 class="h1 mega-title{% if itemType.settings.text_size == 'large' %} mega-title--large{% endif %}">{{ itemType.settings.title | escape }}</h2>
+        {%- endif -%}
+        {%- if itemType.settings.text != blank -%}
+          <div class="rte-setting mega-subtitle{% if itemType.settings.text_size == 'large' %} mega-subtitle--large{% endif %}">{{ itemType.settings.text }}</div>
+        {%- endif -%}
+        {%- if itemType.settings.button_label != blank and itemType.settings.button_link != blank -%}
+          <a href="{{ itemType.settings.button_link }}" class="btn hero__btn">
+            {{ itemType.settings.button_label | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+      {%- if itemType.settings.image != blank -%}
+
+        {%- assign heroClasses = "hero-fixed-width__image lazyload lazypreload"  -%}
+
+        {%- if itemType.settings.mobile_image != blank -%}
+          {%- assign heroClasses = "hero-fixed-width__image lazyload lazypreload small--hide"  -%}
+        {%- endif -%}
+
+        <img class="{{ heroClasses }}"
+             data-src="{{ img_url }}"
+             data-widths="[180, 360, 470, 600, 770, 970, 1060, 1280, 1420]"
+             data-aspectratio="{{ itemType.settings.image.aspect_ratio }}"
+             data-sizes="auto"
+             style="{%- if slide_width <= max_width -%}
+                      {%- assign min_width = slide_width | times: 100 | divided_by: max_width -%}
+                      min-width: {{ min_width }}%;
+                    {%- endif -%}
+                    object-position: {{ itemType.settings.alignment }};"
+             alt="{{ itemType.settings.image.alt | escape }}">
+      {%- endif -%}
+      {%- if itemType.settings.mobile_image != blank -%}
+        <img class="hero-fixed-width__image lazyload lazypreload large--hide"
+             data-src="{{ mobile_img_url }}"
+             data-widths="[180, 360, 470, 600, 770, 970]"
+             data-aspectratio="{{ itemType.settings.image.aspect_ratio }}"
+             data-sizes="auto"
+             style="{%- if slide_width <= max_width -%}
+                      {%- assign min_width = slide_width | times: 100 | divided_by: max_width -%}
+                      min-width: {{ min_width }}%;
+                    {%- endif -%}
+                    object-position: {{ itemType.settings.alignment }};"
+             alt="{{ itemType.settings.image.alt | escape }}">
+      {%- else -%}
+        <span>
+          {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+          {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+        </span>
+      {%- endif -%}
+      <noscript>
+        <div class="hero-fixed-width__image"{% if itemType.settings.image %}{% unless itemType.settings.image.alt == blank %} role="img" aria-label="{{ itemType.settings.image.alt | escape }}"{% endunless %} style="background-image: url('{{ itemType.settings.image | img_url: '2048x' }}'); background-position: center {{ itemType.settings.alignment }};"{% endif %}></div>
+      </noscript>
+    </div>
+  {%- else -%}
+    <div class="hero hero--{{ itemType.settings.hero_size }} hero-{{ itemType.id }}{% if itemType.settings.title != blank or itemType.settings.text != blank or itemType.settings.button_label != blank %} hero__overlay{% endif %} box ratio-container lazyload"
+         id="Hero-{{ itemType.id }}"
+         data-layout="{{ itemType.settings.hero_layout }}">
+    {%- if itemType.settings.image == blank -%}
+      <div class="placeholder-background">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {%- else -%}
+      <div class="hero--background">
+        <img
+          data-image-loading-animation
+          class="hero--background-img lazyload js {% if itemType.settings.mobile_image %}small--hide{% endif %}"
+          data-src="{{ img_url }}"
+          data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+          data-aspectratio="{{ itemType.settings.image.aspect_ratio }}"
+          data-sizes="auto"
+          alt="{{ itemType.settings.image.alt | escape }}"
+          style="object-position: {{ itemType.settings.alignment }};">
+        {%- if itemType.settings.mobile_image -%}
+          {%- assign img_url = itemType.settings.mobile_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+          <img
+            data-image-loading-animation
+            class="hero--background-img lazyload js large--hide"
+            data-src="{{ img_url }}"
+            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+            data-aspectratio="{{ itemType.settings.mobile_image.aspect_ratio }}"
+            data-sizes="auto"
+            alt="{{ itemType.settings.mobile_image.alt | escape }}"
+            style="object-position: {{ itemType.settings.alignment }};">
+          {%- endif -%}
+      </div>
+    {%- endif -%}
+      {%- if itemType.settings.pretitle != blank or itemType.settings.title != blank or itemType.settings.text != blank or itemType.settings.button_label != blank and itemType.settings.button_link != blank -%}
+        <div class="hero__inner hero__inner--{{- itemType.settings.text_size -}}">
+          {%- if itemType.settings.icon != blank -%}
+            {%- assign icon_url = itemType.settings.icon | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+            <img class="hero__icon lazyload"
+                data-src="{{ icon_url }}"
+                data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                data-aspectratio="{{ itemType.settings.icon.aspect_ratio }}"
+                data-sizes="auto"
+                alt="{{ itemType.settings.icon.alt | escape }}">
+            <noscript>
+              {{ itemType.settings.icon | img_url: '100x100', scale: 2 | img_tag: itemType.settings.icon.alt, 'hero__icon' }}
+            </noscript>
+          {%- endif -%}
+          {%- if itemType.settings.pretitle != blank -%}
+            {% if itemType.settings.pretitle_is_page_title %} <h1 {% else %} <h3 {% endif %} class="h2 pre-title{% if itemType.settings.text_size == 'large' %} pre-title--large{% endif %}">{{ itemType.settings.pretitle | escape }}{% if itemType.settings.pretitle_is_page_title %} </h1> {% else %} </h3> {% endif %}
+          {%- endif -%}
+          {%- if itemType.settings.title != blank -%}
+            {% if itemType.settings.title_is_page_title %} <h1 {% else %} <h2 {% endif %} class="h1 mega-title{% if itemType.settings.text_size == 'large' %} mega-title--large{% endif %}">{{ itemType.settings.title | escape }}{% if itemType.settings.title_is_page_title %} </h1> {% else %} </h2> {% endif %}
+          {%- endif -%}
+          {%- if itemType.settings.text != blank -%}
+            <div class="rte-setting mega-subtitle{% if itemType.settings.text_size == 'large' %} mega-subtitle--large{% endif %}">{{ itemType.settings.text }}</div>
+          {%- endif -%}
+          {%- if itemType.settings.button_label != blank and itemType.settings.button_link != blank -%}
+            {%- capture ariaLabel -%}
+              {{- itemType.settings.button_label -}}
+              {%- if itemType.settings.button_link.type == 'frontpage_link' -%}
+                : {{ 'homepage.general.title' | t -}}
+              {%- elsif itemType.settings.button_link.type == 'catalog_link' -%}
+                : {{ 'collections.catalog.title' | t -}}
+              {%- elsif itemType.settings.button_link.object.title -%}
+                : {{ itemType.settings.button_link.object.title -}}
+              {%- endif -%}
+            {%- endcapture -%}
+
+            <a href="{{ itemType.settings.button_link }}"
+              class="btn hero__btn"
+              {%- if itemType.settings.button_link_target_blank -%}
+                target="_blank"
+              {%- endif -%}
+              aria-label="{{ ariaLabel }}">
+              {{- itemType.settings.button_label | escape -}}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <noscript>
+      <div class="hero hero--{{ itemType.settings.hero_size }}{% if itemType.settings.title != blank or itemType.settings.text != blank or itemType.settings.button_label != blank %} hero__overlay{% endif %}"{% if itemType.settings.image %}{% unless itemType.settings.image.alt == blank %} role="img" aria-label="{{ itemType.settings.image.alt | escape }}"{% endunless %} style="background-image: url('{{ itemType.settings.image | img_url: '2048x' }}'); background-position: center {{ itemType.settings.alignment }};"{% endif %}></div>
+    </noscript>
+  {%- endif -%}
+  {%- if itemType.settings.hero_layout == 'fixed_width' -%}
+    </div>
+  {%- endif -%}
+  {%- if itemType.settings.button_link != blank -%}
+    </a>
+  {%- endif -%}
+</div>

@@ -1,0 +1,27 @@
+.shopify-policy-title {
+  margin-top: 1em;
+  margin-left: 3px;
+  line-height: 2;
+}
+.template-policy .main-content {
+  max-width: 1400px;
+  padding: 40px;
+  margin: 30px auto 0;
+}
+.template-policy .shopify-policy__container {
+  max-width: 600px;
+  margin: 0;
+  padding: 0;
+}
+.template-policy .shopify-policy__container p {
+  font-size: 13px;
+  font-family: HkNova, sans-serif;
+  line-height: 1.4;
+}
+.template-policy .shopify-policy__title {
+  text-align: left;
+}
+.template-policy .shopify-policy__title h1 {
+  text-transform: capitalize;
+  margin-bottom: 50px;
+}

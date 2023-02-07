@@ -1,0 +1,26 @@
+{%- liquid 
+  capture anglicized_date
+    echo '%B %e'
+    assign last_digit = english-date | date: '%e' | times: 1
+    case last_digit
+      when 1
+        echo 'st'
+      when 21
+        echo 'st'
+      when 31
+        echo 'st'
+      when 2
+        echo 'nd'
+      when 22
+        echo 'nd'
+      when 3
+        echo 'rd'
+      when 23
+        echo 'rd'
+      else
+        echo 'th'
+    endcase
+    echo ' %Y'
+  endcapture
+-%}
+{{ english-date | time_tag: anglicized_date }}

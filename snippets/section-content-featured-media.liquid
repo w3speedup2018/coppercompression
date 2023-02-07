@@ -1,0 +1,71 @@
+<link href="{{'section-featured-media.css' | asset_url}}" defer="defer" rel="stylesheet">
+<div class="page-width {% if itemType.settings.align_heading_left -%} featured-media--sidebar{% endif %}" {{ itemType.shopify_attributes }}>
+  <header class="section-header">
+    {%- if itemType.settings.pretitle != blank -%}
+      <h3 class="featured-media--pretitle">{{ itemType.settings.pretitle | escape }}</h3>
+    {%- endif -%}
+    {%- if itemType.settings.title != blank -%}
+      <h2 class="featured-media--title">{{ itemType.settings.title | escape }}</h2>
+    {%- endif -%}
+    {%- if itemType.settings.subtitle != blank -%}
+      <p class="featured-media--subtitle">{{ itemType.settings.subtitle | escape }}</p>
+    {%- endif -%}
+  </header>
+
+  <ul class="featured-media">
+    {% if itemType.blocks %}
+      {%- assign blocks = itemType.blocks -%}
+    {% else %}
+      {%- capture blocks -%}{%- for i in (1..8) -%}block_{{- i -}}_,{%- endfor -%}{%- endcapture -%}
+      {%- assign blocks = blocks | split: ',' -%}
+    {% endif %}
+    {%- for block in blocks -%}
+      {% liquid 
+        if block.settings
+          assign button_label = block.settings.button_label
+          assign link = block.settings.button_link
+          assign title = block.settings.title
+          assign pretitle = block.settings.pretitle
+          assign content = block.settings.content
+        else
+          assign key = block | append: 'enabled'
+          unless itemType.settings[key]
+            continue
+          endunless
+          assign key = block | append: 'button_label'
+          assign button_label = itemType.settings[key]
+          assign key = block | append: 'link'
+          assign link = itemType.settings[key]
+          assign key = block | append: 'title'
+          assign title = itemType.settings[key]
+          assign key = block | append: 'pretitle'
+          assign pretitle = itemType.settings[key]
+          assign key = block | append: 'content'
+          assign content = itemType.settings[key]
+        endif
+      %}
+      <li class="featured-media--item">
+        <article aria-labelledby="FeaturedMediaTitle-{{ forloop.index0 }}-{{ itemType.id }}">
+          <header>
+            {%- if pretitle != blank -%}
+              <h4 class="media-pretitle">{{ pretitle | escape }}</h3>
+            {%- endif -%}
+            <h3 class="media-title" id="FeaturedMediaTitle-{{ forloop.index0 }}-{{ itemType.id }}">
+              {{ title }}
+            </h3>
+          </header>
+
+          <div class="featured-media-meta">
+            <div class="rte">
+              {{ content }}
+            </div>
+
+            <a href="{{ link }}" class="featured-media-link" {%- if link contains 'http' -%}rel="noopener" target="_blank"{% endif %}>
+              {{ button_label | escape }}
+            </a>
+          </div>
+        </article>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

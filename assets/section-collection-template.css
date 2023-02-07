@@ -1,0 +1,128 @@
+
+.collection-template .collection-header .page-width {
+  padding-bottom: 0;
+}
+.collection-template .collection-header h1 {
+  margin-bottom: 0;
+  font-size: 0.75em;
+  font-weight: 800;
+  color: #4783b5;
+  text-transform: uppercase;
+  line-height: normal;
+  text-align: left;
+}
+.collection-template .collection-header .rte {
+  margin-bottom: 0;
+  text-align: left;
+}
+.collection-hero {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto 3px;
+}
+.collection-description {
+  margin-bottom: 22px;
+  margin-top: 22px;
+}
+.collection-hero__image {
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 1;
+  height: 0;
+}
+.collection-hero__title-wrapper:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #685858;
+}
+.collection-hero__title {
+  position: absolute;
+  color: #ffffff;
+  width: 100%;
+  text-align: center;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.collection-grid-item {
+  margin-bottom: 30px;
+}
+.collection-grid-item__title {
+  padding: 0 15px;
+}
+.collection-grid {
+  margin-bottom: -22px;
+  overflow: auto;
+}
+.collection-grid-item {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  margin-bottom: 22px;
+}
+.collection-grid-item__title {
+  color: #ffffff;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  top: 50%;
+  padding: 0 5px;
+  transform: translateY(-50%);
+  transition: 0.1s cubic-bezier(0.44, 0.13, 0.48, 0.87);
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+.collection-grid-item__link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.collection-grid-item__link:focus {
+  opacity: 1;
+}
+.collection-grid-item__link:focus .collection-grid-item__title-wrapper:before,
+.collection-grid-item__link:hover .collection-grid-item__title-wrapper:before {
+  opacity: 0;
+}
+.collection-grid-item__overlay {
+  position: relative;
+  display: block;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+.collection-grid-item__title-wrapper:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #df9978;
+}
+.collection-template .page-width,
+.template-search .list-view-items {
+  padding: 40px 40px 60px;
+  background-color: rgba(71, 131, 181, 0.1);
+}
+@media only screen and (min-width: 750px) {
+  .collection-description {
+    margin-bottom: 35px;
+    margin-top: 35px;
+  }
+  .collection-hero__title {
+    font-size: calc(((26 6) / (15)) * 1em);
+  }
+}

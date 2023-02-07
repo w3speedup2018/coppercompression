@@ -1,0 +1,21 @@
+{%- if itemType.settings.countdown_id != blank -%}
+{%- if itemType.settings.custom_sizes -%}
+  {%- style -%}
+    @media screen and (max-width: 990px) {
+      .countdown_timer_wrapper_{{ itemType.settings.countdown_id }} h2 {
+        font-size: {{ itemType.settings.title_size }}px;
+      }
+      .countdown_timer_subheading_{{ itemType.settings.countdown_id }} {
+        font-size: {{ itemType.settings.subheading_size }}px;
+      }
+      .countdown_time_{{ itemType.settings.countdown_id }} {
+        font-size: {{ itemType.settings.time_size }}px;
+      }
+      .countdown_legend_{{ itemType.settings.countdown_id }} {
+        font-size: {{ itemType.settings.legend_size }}px;
+      }
+    }
+  {%- endstyle -%}
+{%- endif -%}
+  <div class="countdown-timer-block {% if itemType.settings.page_layout == 'normal' %}page-width{% else -%}page-width-{{ itemType.settings.page_layout }}{% endif %}" countdown-timer-id="{{ itemType.settings.countdown_id }}"></div>
+{%- endif -%}

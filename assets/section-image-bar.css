@@ -1,0 +1,99 @@
+
+.image-bar {
+  overflow: hidden;
+}
+.image-bar__item {
+  display: block;
+  color: #ffffff;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+  position: relative;
+  width: 100%;
+}
+.image-bar__content {
+  position: relative;
+  width: 100%;
+}
+.image-bar__content .placeholder-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.image-bar__link:focus {
+  position: relative;
+  z-index: 2;
+}
+.image-bar__link:focus .image-bar__overlay:before {
+  opacity: 0;
+}
+.image-bar__link:focus .image-bar__content {
+  outline: 1px dotted #212121;
+}
+.image-bar__link:hover .image-bar__overlay:before {
+  opacity: 0;
+}
+.image-bar--x-small .image-bar__content,
+.image-bar--x-small .image-bar__item {
+  height: 94px;
+}
+.image-bar--small .image-bar__content,
+.image-bar--small .image-bar__item {
+  height: 225px;
+}
+.image-bar--medium .image-bar__content,
+.image-bar--medium .image-bar__item {
+  height: 50vh;
+  background-attachment: fixed;
+}
+@media (max-width: 576px) {
+  .image-bar--medium .image-bar__content,
+  .image-bar--medium .image-bar__item {
+    height: 300px;
+    background-attachment: scroll;
+  }
+}
+.image-bar--large .image-bar__content,
+.image-bar--large .image-bar__item {
+  height: 488px;
+}
+.image-bar--x-large .image-bar__content,
+.image-bar--x-large .image-bar__item {
+  height: 582px;
+}
+.image-bar__overlay:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #685858;
+}
+.image-bar__caption {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: 0.1s cubic-bezier(0.44, 0.13, 0.48, 0.87);
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+@media only screen and (min-width: 750px) {
+  .image-bar--x-small .image-bar__content,
+  .image-bar--x-small .image-bar__item {
+    height: 125px;
+  }
+  .image-bar--small .image-bar__content,
+  .image-bar--small .image-bar__item {
+    height: 300px;
+  }
+  .image-bar--large .image-bar__content,
+  .image-bar--large .image-bar__item {
+    height: 650px;
+  }
+  .image-bar--x-large .image-bar__content,
+  .image-bar--x-large .image-bar__item {
+    height: 775px;
+  }
+}

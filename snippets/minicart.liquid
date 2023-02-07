@@ -1,0 +1,84 @@
+{% assign title = settings.minicart_title %}
+{% assign show_progress_bar = settings.minicart_show_progress_bar %}
+{% assign free_threshold = settings.minicart_free_threshold %}
+{% assign bar_in_process_text = settings.minicart_bar_in_process_text %}
+{% assign bar_in_success_text = settings.minicart_bar_in_success_text %}
+{% assign shipping_text = settings.minicart_shipping_text %}
+{% assign checkout_text = settings.minicart_checkout_text %}
+{% assign show_upsell = settings.minicart_show_upsell %}
+
+<section class="minicart js-minicart {% if cart.item_count == 0 %}empty{% endif %}">
+  <div class="minicart__container {% if additional_checkout_buttons %}aditional-buttons--active{% endif %}">
+    <div class="minicart__wrapper">
+      <header class="minicart__header">
+        <h4 class="minicart__title">{{ title }}</h4>
+        <button class="js-close-minicart minicart__btn-close" aria-label="Close Minicart">
+          {% render 'icon-close' %}
+        </button>
+      </header>
+
+      <div class="minicart__empty">
+        <h3>Cart is empty</h3>
+      </div>
+
+      <div class="minicart__body">
+        {% if show_progress_bar %}
+          {{ compare_bar_price }}
+          <div class="minicart__progress-bar">
+            <p class="js-bar-progress-text minicart__progress-bar-text"
+               data-treshold="{{ free_threshold }}"
+               data-process-text="{{ bar_in_process_text }}"
+               data-success-text="{{ bar_in_success_text }}">
+            </p>
+
+            <div class="minicart__progress-bar-line">
+              <div class="js-minicart-progress-bar minicart__progress-bar-fill"></div>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="js-minicart-items minicart__items">
+          {% render 'minicart-items' %}
+        </div>
+        {% if show_upsell %}
+          <div class="js-minicart-upsell">
+            {% if cart.item_count > 0 %}
+              {% render 'upsell-products', main_product: cart.items.first.product %}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+      <div class="minicart__checkout">
+        <div class="minicart__subtotal">
+          <p class="minicart__subtotal-text">
+            Subtotal (<span class="js-cart-count">{{ cart.item_count }}</span> Item<span
+              class="js-cart-count-ending minicart__count-ending {% if cart.item_count > 1 %}active{% endif %}">s</span>)
+          </p>
+          <span class="js-minicart-subtotal-price minicart__subtotal-price">
+              {{ cart.items_subtotal_price | money }}
+          </span>
+        </div>
+
+        <p class="minicart__checkout-shipping">{{ shipping_text }}</p>
+
+        <a href="/checkout" class="minicart__checkout-button">
+          {{ checkout_text }}
+          <span class="minicart__checkout-button-chevron">{% render 'icon-chevron-right' %}</span>
+        </a>
+
+        {% if additional_checkout_buttons %}
+            <div class="additional-checkout-buttons">
+            {{ content_for_additional_checkout_buttons }}
+            </div>
+        {% endif %}
+      </div>
+    </div>
+
+
+    <div class="js-minicart-loader minicart__loader">
+      <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="js-close-minicart js-minicart-overlay minicart__overlay"></div>

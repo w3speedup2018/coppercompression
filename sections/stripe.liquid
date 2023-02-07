@@ -1,0 +1,20 @@
+{%- render 'section-content-stripe', itemType: section -%}
+
+{% schema %}
+{
+  "name": "Copper stripe",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "page_width",
+      "label": "Limit to Page Width",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Copper stripe"
+    }
+  ]
+}
+{% endschema %}

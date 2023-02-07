@@ -1,0 +1,169 @@
+{% comment %}
+    Renders a list of product's price (regular, sale, unit)
+    Accompanies product listings (collection page, search result) and not updated dynamically
+    Accepts:
+    - variant: {Object} Variant Liquid object (optional)
+    - product: {Object} Product Liquid object (optional)
+    - show_vendor: {Boolean} Show the product's vendor depending on the section setting (optional)
+    - filter_option: {number} Filter product's variants by key (Eg. 1) (optional)
+    - filter_value: {string} Filter product's variants by key value (Eg. blue) (optional)
+    Usage:
+    {% render 'product-price-listing', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign filter_value = filter_value | default: false
+  assign filter_option = filter_option | default: false
+  assign size_option = size_option | default: false
+
+  if product.title
+    assign compare_at_price = product.compare_at_price
+    assign price = product.price
+    assign available = product.available
+    assign variant = product.variants.first
+  else
+    assign compare_at_price = 1999
+    assign price = 1999
+    assign available = true
+  endif
+  assign money_price = price | money_without_trailing_zeros
+
+  assign preview_variant = product.first_available_variant
+  assign add_to_cart_single_option = true
+  
+  if size_option or filter_value and filter_option
+    assign available_variants = product.variants | where: 'available'
+    assign size_key = 'option' | append: size_option.position
+    assign preview_variants = ''
+    assign available = false
+
+    if filter_value and filter_option 
+      assign option_name = filter_option.name | downcase
+      assign filter_value = filter_value | downcase
+      assign option = 'option' | append: filter_option.position
+
+      for v in available_variants
+        assign option_value = v[option] | downcase
+        if option_value contains filter_value
+          if size_option 
+            if preview_variants != ''
+              assign preview_variants = preview_variants | append: ','
+            endif
+            assign preview_variants = preview_variants | append: v.id | append: ':' | append: v[size_key]
+          else 
+            assign preview_variant = v
+            assign available = true
+            break
+          endif
+        endif
+      endfor
+    elsif size_option
+      for v in available_variants
+        if preview_variants != ''
+          assign preview_variants = preview_variants | append: ','
+        endif
+        assign preview_variants = preview_variants | append: v.id | append: ':' | append: v[size_key]
+      endfor
+    endif
+
+    if preview_variants != ''
+      assign available = true
+      assign add_to_cart_single_option = false
+      assign preview_variants = preview_variants | split: ','
+    endif
+  endif
+
+-%}
+
+<div class="product-grid-item__cta">
+  <dl class="price price--listing
+    {%- if available == false %} price--sold-out {% endif -%}
+    {%- if compare_at_price > price %} price--on-sale {% endif -%}
+    {%- if product.price_varies == false and product.compare_at_price_varies %} price--compare-price-hidden {% endif -%}
+    {%- if variant.unit_price_measurement %} price--unit-available {% endif -%}"
+    {%- if available -%}{%- if add_to_cart_single_option -%} data-variant-id="{{ preview_variant.id }}" data-quick-add {%- else -%} data-quick-add-sizes {% endif -%}{%- endif -%}
+  >
+    {% if show_vendor and product %}
+      <div class="price__vendor price__vendor--listing">
+        <dt>
+          <span class="visually-hidden">{{ 'products.product.vendor' | t }}</span>
+        </dt>
+        <dd>
+          {{ product.vendor }}
+        </dd>
+      </div>
+    {% endif %}
+
+    {%- comment -%}
+      Explanation of description list:
+        - div.price__regular: Displayed when there are no variants on sale
+        - div.price__sale: Displayed when a variant is a sale
+        - div.price__unit: Displayed when the first variant has a unit price
+        - div.price__availability: Displayed when the product is sold out
+    {%- endcomment -%}
+    <div class="price__regular">
+      <dt>
+        <span class="visually-hidden visually-hidden--inline">{{ 'products.product.regular_price' | t }}</span>
+      </dt>
+      <dd>
+        <span class="price-item price-item--regular">
+          {%- if available %}
+            ADD TO CART -&nbsp;
+          {%- else -%}
+            {{ 'products.product.sold_out' | t | upcase }} -&nbsp;
+          {% endif -%}
+          {%- if product.price_varies -%}
+            <span class="price-item__script">
+              {{ 'products.product.from_lowest_price_html' | t: lowest_price: money_price }}
+            </span>
+          {%- else -%}
+            {{ money_price }}
+          {%- endif -%}
+        </span>
+      </dd>
+    </div>
+    {%- if compare_at_price > price -%}
+      <div class="price__sale">
+        <dt>
+          <span class="visually-hidden visually-hidden--inline">{{ 'products.product.sale_price' | t }}</span>
+        </dt>
+        <dd>
+          <span class="price-item price-item--sale">
+            {%- if available %}
+              ADD TO CART -&nbsp;
+            {%- else -%}
+              {{ 'products.product.sold_out' | t | upcase }} -&nbsp;
+            {% endif -%}
+            {%- if product.price_varies -%}
+              <span class="price-item__script">
+                {{ 'products.product.from_lowest_price_html' | t: lowest_price: money_price }}
+              </span>
+            {%- else -%}
+              {{ money_price }}
+            {%- endif -%}
+          </span>
+        </dd>
+        <div class="price__compare">
+          <dt>
+            <span class="visually-hidden visually-hidden--inline">{{ 'products.product.regular_price' | t }}</span>
+          </dt>
+          <dd>
+            &nbsp;&nbsp;
+            <s class="price-item price-item--regular">
+              {{ compare_at_price | money_without_trailing_zeros }}
+            </s>
+          </dd>
+        </div>
+      </div>
+    {%- endif -%}
+  </dl>
+
+  {%- if add_to_cart_single_option == false and preview_variants.size > 0 -%}
+    <div class="data-quick-add__wrapper">
+      {% for v in preview_variants %}
+        {% assign v_data = v | split: ':' %}
+        <div data-variant-id="{{ v_data[0] }}" data-quick-add>{{ v_data[1] | remove: 'Hand '}}</div>
+      {% endfor %}
+    </div>
+  {%- endif-%}
+</div>

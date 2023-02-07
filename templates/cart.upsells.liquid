@@ -1,0 +1,7 @@
+{% layout 'none' %}
+
+{% if cart.item_count > 0 %}
+  <div class="minicart-ajax-template-upsell">
+    {% render 'upsell-products', main_product: cart.items.first.product %}
+  </div>
+{% endif %}

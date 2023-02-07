@@ -1,0 +1,24 @@
+{%- render 'section-content-image', itemType: section -%}
+
+{% schema %}
+{
+  "name": "Basic Image",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Basic Image"
+    }
+  ]
+}
+{% endschema %}

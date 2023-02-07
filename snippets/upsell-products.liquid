@@ -1,0 +1,89 @@
+
+{% assign upsell_limit = settings.upsell_limit | plus: 1 %}
+{% assign upsell_title = settings.upsell_title %}
+{% assign upsell_btn_text = settings.upsell_btn_text %}
+{% assign count = 0 %}
+
+{% if cart.item_count > 0 %}
+  {% assign products_in_cart = '' %}
+  {% for i in cart.items %}
+    {% assign products_in_cart = products_in_cart | append: i.product_id %}
+    {% unless forloop.last %}
+      {% assign products_in_cart = products_in_cart | append: "," %}
+    {% endunless %}
+  {% endfor %}
+{% endif %}
+
+{% if main_product != blank %}
+
+  {% assign upsell_products = main_product.metafields.custom.upsell_products.value %}
+
+  {% if upsell_products == blank and settings.upsell_collection != blank %}
+    {% assign upsell_products = settings.upsell_collection.products %}
+  {% endif %}
+
+  {% if upsell_products != blank %}
+    <div class="upsell-products" data-related-product-id="{{main_product.id}}">
+      {% if upsell_title != '' %}
+        <h4 class="minicart__title upsell-products__title">{{ upsell_title }}</h4>
+      {% endif %}
+
+      <div class="upsell-products__items upsell-swiper swiper">
+        <div class="swiper-wrapper">
+          {% for upsell_product in upsell_products %}            
+            {% if upsell_product.available %}
+              {% unless products_in_cart contains upsell_product.id %}
+                {% assign count = count | plus: 1 %}
+                {% if count < upsell_limit %}
+                  <div class="upsell-products-item swiper-slide">
+                    <div class="upsell-products-item__image-container">
+                      <div class="upsell-products-item__image-wrapper">
+                        <img
+                            src="{{ upsell_product.featured_image | img_url: '100x' }}"
+                            srcset="{{ upsell_product.featured_image | img_url: '100x' }} 1x, {{ upsell_product.featured_image | img_url: '100x' }} 2x"
+                            alt="{{ upsell_product.title | remove: 'Copper Compression ' }}"
+                            class="upsell-products-item__image"
+                        >
+                      </div>
+                    </div>
+
+                    <div class="upsell-products-item__meta">
+                      <h5 class="upsell-products-item__title">{{ upsell_product.title | remove: 'Copper Compression ' }}</h5>
+
+                      <p class="upsell-products-item__price">{{ upsell_product.price | money }}</p>
+
+                      <div class="upsell-products-item__btn-group">
+                        <div class="upsell-products-item__btn-wrapper">
+                            <select
+                                id="ProductSelect-{{ forloop.index0 }}"
+                                data-index="option{{ forloop.index }}"
+                                class="js-upsell-variant minicart-item__quantity upsell-products-item__select"
+                            >
+                              <option value="" disabled selected>Select</option>
+                              {%- for variant in upsell_product.variants -%}
+                                  <option
+                                      {% if variant == current_variant %}selected="selected"{% endif %}
+                                      {% unless variant.available %}disabled="disabled"{% endunless %}
+                                      value="{{ variant.id }}">
+                                  {{- variant.option1 -}}
+                                  </option>
+                              {%- endfor -%}
+                            </select>
+                        </div>
+
+                        <div class="upsell-products-item__btn-wrapper">
+                          <button class="btn js-upsell-btn upsell-products-item__btn">{{ upsell_btn_text }}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endunless %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  {% endif %}
+{% endif %}

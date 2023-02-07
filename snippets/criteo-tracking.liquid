@@ -1,0 +1,134 @@
+<script
+    type="text/javascript"
+    src="//dynamic.criteo.com/js/ld/ld.js?a=87666"
+    async="true"
+></script>
+<script type="text/javascript">
+    (function(){
+      var deviceType = /iPad/.test(navigator.userAgent) ? "t" : /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Silk/.test(navigator.userAgent) ? "m" : "d";
+      window.criteo_q = window.criteo_q || [];
+      window.criteo_q.push(
+        { event: "setAccount", account: 87666 },
+        { event: "setEmail", email: "{{ customer.email }}" },
+        { event: "setSiteType", type: deviceType },
+        { event: "setZipcode", zipcode: "{{ customer.default_address.zip }}" },
+          {% assign template-type = template | split: '.' | first %}
+          {% if template-type == 'cart' or template-type == 'collection' or template-type == 'index' or template-type == 'product' or template-type == 'search' %}
+          {% unless template-type == 'cart' and cart.item_count < 1 %}
+            {% case template-type %}
+              {% when 'cart' %}
+                { event: "viewBasket", ecpplugin: "shopify-gd",
+                item: [
+                  {% for item in cart.items %}
+                  {% unless forloop.index0 == 0 %}, {% endunless %}
+                    {
+                      id: "{{ item.product.id }}",
+                      price: (typeof({{ item.price }}) != "number") ? {{ item.price }} : ({{ item.price }}/100),
+                      quantity: {{ item.quantity }}
+                    }
+                {% endfor %}]}
+              {% when 'search' %}
+                { event: "viewSearchResult", ecpplugin: "shopify-gd", keyword:"{{search.terms}}",
+                item: [
+                  {% for product in search.results limit:3 %}
+                  {% if forloop.index0 != 0 %},{% endif %}
+                    "{{product.id}}"
+                  {% endfor %}]}
+              {% when 'collection' %}
+                { event: "viewList", ecpplugin: "shopify-gd", category:"{{collection.handle}}",
+                item: [
+                  {% for product in collection.products limit:3 %}
+                  {% if forloop.index0 != 0 %},{% endif %}
+                    "{{product.id}}"
+                  {% endfor %}]}
+              {% when 'index' %}
+                { event: "viewHome", ecpplugin: "shopify-gd" }
+              {% when 'product' %}
+                { event: "viewItem", ecpplugin: "shopify-gd", item: "{{ product.id }}" }
+            {% endcase %}
+          {% endunless %}
+          {% else %}
+            { event: "viewPage" , ecpplugin: "shopify-gd" }
+          {% endif %}
+      );
+
+      window.addEventListener('load', function() {
+        // ajax request catching
+        (function(open) {
+          XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {
+            this.addEventListener("readystatechange", function() {
+              if (this.readyState == 4 && this._url.includes("/add.js") && "{{ product.id }}" != "") {
+                try {
+                  $.getJSON("/cart.js", function(data) {
+                    var basketData = [];
+                    var item;
+                    if (!data.items || !data.items.length) return;
+                    for (var i = 0; i < data.items.length; i++) {
+                      item = data.items[i];
+                      if (item.product_id == "{{ product.id }}") {
+                        basketData.push({
+                          id: item.product_id,
+                          price: (typeof(item.price) != "number") ? item.price : (item.price/100),
+                          quantity: item.quantity
+                        });
+                      }
+                    }
+                    window.criteo_q.push({
+                      event: "addToCart",
+                      ecpplugin: "shopify-gd",
+                      product: basketData
+                    });
+                  });
+                } catch (err) {
+                  // do nothing
+                  console.log('Criteo Tracking -- Tried $.getJSON() -- Error:', err);
+                }
+              }
+            }, false);
+            open.call(this, method, url, async, user, pass);
+          };
+        })(XMLHttpRequest.prototype.open);
+
+        // fetch request catching
+        const crtoMock = window.fetch;
+        window.fetch = function() {
+          return new Promise((resolve, reject) => {
+            crtoMock.apply(this, arguments)
+              .then((response) => {
+                if(response.url.includes("/add.js") && response.type != "cors" && "{{ product.id }}" != ""){
+                  try {
+                    $.getJSON("/cart.js", function(data) {
+                      var basketData = [];
+                      var item;
+                      if (!data.items || !data.items.length) return;
+                      for (var i = 0; i < data.items.length; i++) {
+                        item = data.items[i];
+                        if (item.product_id == "{{ product.id }}") {
+                          basketData.push({
+                            id: item.product_id,
+                            price: (typeof(item.price) != "number") ? item.price : (item.price/100),
+                            quantity: item.quantity
+                          });
+                        }
+                      }
+                      window.criteo_q.push({
+                        event: "addToCart",
+                        ecpplugin: "shopify-gd",
+                        product: basketData
+                      });
+                    });
+                  } catch (err) {
+                    // do nothing
+                    console.log('Criteo Tracking -- Tried $.getJSON() -- Error:', err);
+                  }
+                }
+                resolve(response);
+              })
+              .catch((error) => {
+                reject(error);
+              })
+          });
+        }
+      }, false);
+    })();
+</script>

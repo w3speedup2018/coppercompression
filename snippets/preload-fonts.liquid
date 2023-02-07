@@ -1,0 +1,8 @@
+{%- assign fonts = 'gilroy_800,gilroy_300,hk-nova_400,hk-nova_500,hk-nova_800,hk-nova_700' | split: ',' -%}
+{%- liquid 
+  for font in fonts
+    echo '<link rel="preload" href="'
+    echo font | append: '.woff2' | file_url
+    echo '" type="font/woff2" as="font" crossorigin />'
+  endfor
+  -%}

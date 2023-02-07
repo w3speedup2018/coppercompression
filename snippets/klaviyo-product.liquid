@@ -1,0 +1,26 @@
+<script type="text/javascript">
+  window._learnq = window._learnq || [];
+  window.klaviyoItem = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+  };
+  window._learnq.push(['track', 'Viewed Product', window.klaviyoItem]);
+  window._learnq.push(['trackViewedItem', {
+    Title: window.klaviyoItem.Name,
+    ItemId: window.klaviyoItem.ProductID,
+    Categories: window.klaviyoItem.Categories,
+    ImageUrl: window.klaviyoItem.ImageURL,
+    Url: window.klaviyoItem.URL,
+    Metadata: {
+      Brand: window.klaviyoItem.Brand,
+      Price: window.klaviyoItem.Price,
+      CompareAtPrice: window.klaviyoItem.CompareAtPrice
+    }
+  }]);
+</script>
